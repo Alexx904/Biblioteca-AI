@@ -27,7 +27,39 @@
             </ul>
         </nav>
 
-        <button class="buttonNav">Login/Signup</button>
+        <button class="buttonNav" id="openPopup">Login / Signup</button>
+        <div id="popup" class="popup hidden">
+            <div class="popup-box">
+
+                <button id="closePopup" class="close">&times;</button>
+
+                <h2>Biblioteca</h2>
+
+                <div class="tabs">
+                    <button id="loginTab" class="active">Accedi</button>
+                    <button id="registerTab">Registrati</button>
+                </div>
+
+                <!-- LOGIN -->
+                <form id="loginForm">
+                    <input type="email" placeholder="Email">
+                    <input type="password" placeholder="Password">
+                    <button type="submit">Accedi</button>
+                </form>
+
+                <!-- REGISTRAZIONE -->
+                <form id="registerForm" class="hidden">
+                    <input type="text" placeholder="Nome completo">
+                    <input type="text" placeholder="Matricola">
+                    <input type="text" placeholder="Facoltà">
+                    <input type="email" placeholder="Email">
+                    <input type="password" placeholder="Password">
+                    <button type="submit">Crea account</button>
+                </form>
+
+            </div>
+        </div>
+        <script src="Auth.js"></script>
     </div>
 </header>
 
