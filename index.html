@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Biblioteca</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ridimensionamento rispetto al dispostivo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ridimensionamento rispetto al dispostivo -->
     <meta name="description" content="Gestione Biblioteca">
     <link rel="icon" href="img/icon.png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
 </head>
 <body>
@@ -19,15 +20,32 @@
             <span>Biblioteca</span>
         </a>
 
-        <nav class="header__nav">
+        <button class="hamburger" id="hamburgerBtn">
+            ☰
+        </button>
+
+        <nav class="header__nav" id="headerNav">
             <ul class="header__nav-list">
                 <li><a href="index.html#catalogo">Catalogo</a></li>
                 <li><a href="#postazioni">Postazioni</a></li>
                 <li><a href="#chat">Chat</a></li>
+                <li><button class="buttonNav" id="openPopup">Login / Signup</button></li>
             </ul>
         </nav>
 
-        <button class="buttonNav" id="openPopup">Login / Signup</button>
+        <script src="hamburger.js"></script>
+
+        <div id="profilo__Utente" class="profilo__Utente hidden">
+            <div class="user__info" id="user__info__toggle">
+                <span class="user__icon">👤</span>
+                <span id="user__name">Nome</span>
+            </div>
+
+            <div id="logout__tendina" class="logout__utente hidden">
+                <button id="logoutBtn">Logout</button>
+            </div>
+        </div>
+
         <div id="popup" class="popup hidden">
             <div class="popup-box">
 
@@ -42,18 +60,18 @@
 
                 <!-- LOGIN -->
                 <form id="loginForm">
-                    <input type="email" placeholder="Email">
-                    <input type="password" placeholder="Password">
+                    <input type="email" id="loginEmail" placeholder="Email">
+                    <input type="password" id="loginPassword" placeholder="Password">
                     <button type="submit">Accedi</button>
                 </form>
 
                 <!-- REGISTRAZIONE -->
                 <form id="registerForm" class="hidden">
-                    <input type="text" placeholder="Nome completo">
-                    <input type="text" placeholder="Matricola">
-                    <input type="text" placeholder="Facoltà">
-                    <input type="email" placeholder="Email">
-                    <input type="password" placeholder="Password">
+                    <input type="text" id="regNome" placeholder="Nome completo">
+                    <input type="text" id="regMatricola" placeholder="Matricola">
+                    <input type="text" id="regFacolta" placeholder="Facoltà">
+                    <input type="email" id="regEmail" placeholder="Email">
+                    <input type="password" id="regPassword" placeholder="Password">
                     <button type="submit">Crea account</button>
                 </form>
 
