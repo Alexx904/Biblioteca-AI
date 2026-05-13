@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ridimensionamento rispetto al dispostivo -->
     <meta name="description" content="Gestione Biblioteca">
     <link rel="icon" href="img/icon.png">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 </head>
@@ -15,28 +15,29 @@
 <header class="header">
     <div class="header__container">
         <a class="header__logo" href="index.html">
-            <img src="img/logo.png" alt="logo" width="100px" height="70px">
+            <img class="logo" src="img/logo.png" alt="logo" width="100px" height="70px">
             <span>Biblioteca</span>
         </a>
 
         <nav class="header__nav">
             <ul class="header__nav-list">
                 <li><a href="index.html#catalogo">Catalogo</a></li>
-                <li><a href="#">Postazioni</a></li>
-                <li><a href="#">Chat</a></li>
-                <li><button class="buttonNav">Login/Signup</button></li>
+                <li><a href="#postazioni">Postazioni</a></li>
+                <li><a href="#chat">Chat</a></li>
             </ul>
         </nav>
+
+        <button class="buttonNav">Login/Signup</button>
     </div>
 </header>
 
 <section class="hero">
     <h1 class="hero__title">Biblioteca</h1>
     <p class="hero__text">Prenota libri, riserva postazioni di studio. La tua biblioteca è sempre con te.</p>
-    <img class="hero__image" src="img/hero.jpg" alt="hero" width="300px" height="200px">
+    <img class="hero__image" src="img/hero.jpg" alt="hero">
     <ul class="hero__link">
         <li><a href="#catalogo">Esplora il catalogo</a></li>
-        <li><a href="#">Prenota postazione</a></li>
+        <li><a href="#postazioni">Prenota postazione</a></li>
     </ul>
 
     <div class="hero__info">

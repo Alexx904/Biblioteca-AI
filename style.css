@@ -1,22 +1,75 @@
 :root{
-    --max-width: 1400px;
+
 }
 
-.header{
-    position: fixed;
+.header {
+    position: sticky;
     top: 0;
-    left: 0;
-    right: 0;
-
-    z-index: 100;
-
+    z-index: 1000;           /* Lo tiene in primo piano rispetto agli altri elementi che scorrono sotto */
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.header__container{
-    max-width: var(--max-width);
-    margin: 0 auto;
+.header__container {
+    display: flex;                      /* Mette logo e nav sulla stessa riga */
+    justify-content: space-between;     /* Spinge il logo a sinistra e la nav a destra */
+    align-items: center;                /* Li allinea al centro verticalmente */
+    padding: 10px 30px;                 /* Aggiunge un po' di spazio dai bordi dello schermo */
+    border-block: solid;
+    border-block-color: cornflowerblue;
+    background-color: #95addf;
+}
 
+/* css header e nav */
+.header__logo {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: center; /* Centra verticalmente immagine e testo */
+    gap: 10px; /* Aggiunge un po' di spazio tra il logo e la scritta */
+    text-decoration: none; /*toglie la sottolineatura blu tipica dei link */
+    font-weight: bold;
+    font-size: 55px;
+    font-style: italic;
+}
+
+.logo{
+    border-radius: 55%; /*bordo rotondo*/
+    overflow: hidden;
+    border: 5px solid black;
+    object-fit: cover; /*rimpimento del cerchio */
+    width: 100px;
+    height: 100px;
+}
+
+.header__nav-list {
+    display: flex;       /* Dispone i link in orizzontale */
+    align-items: center; /* Li centra verticalmente */
+    gap: 100px;           /* Crea lo spazio tra una voce e l'altra */
+    list-style: none;    /* Giusto: rimuove i pallini */
+    font-weight: bold;
+    margin: 0;           /* rimuove i margini di default della lista */
+    padding: 0;          /* rimuove il padding di default della lista */
+    font-size: 20px;
+}
+
+.header__nav-list a {
+    text-decoration: none;
+    padding: 7px 10px;
+    border-radius: 70px;
+    border-block: 3px solid transparent;
+    transition: 0.7s;
+}
+.header__nav-list a:hover {
+    border-block-color: #1f375e;
+}
+
+.buttonNav {
+    cursor: pointer;
+    background-color: #b4f6f8;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.buttonNav:hover {
+    background-color: #5cb85c;
+    transition: 0.7s;
 }
