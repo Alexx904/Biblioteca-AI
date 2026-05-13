@@ -23,9 +23,9 @@
 
         <nav class="header__nav">
             <ul class="flex gap-12 text-white text-lg font-medium"> <!-- menu di navigazione, disposto in orizzontale con un gap di 12 tra gli elementi, testo bianco, dimensione del testo grande e spessore del font medio -->
-                <li class="bg-blue-600 p-2 rounded-full hover:bg-blue-800"><a href="#catalogo">Catalogo</a></li> <!-- voce di menu per il catalogo, con sfondo blu, padding, bordi arrotondati e effetto hover che cambia il colore di sfondo -->
-                <li class="bg-blue-600 p-2 rounded-full hover:bg-blue-800"><a href="#postazioni">Postazioni</a></li> <!-- voce di menu per le postazioni, con le stesse classi di stile del catalogo -->
-                <li class="bg-blue-600 p-2 rounded-full hover:bg-blue-800"><a href="#chat">Chat</a></li> <!-- voce di menu per la chat, con le stesse classi di stile del catalogo -->
+                <li class="hover:bg-blue-800 p-2 rounded-full"><a href="#catalogo">Catalogo</a></li> <!-- voce di menu per il catalogo, con sfondo blu, padding, bordi arrotondati e effetto hover che cambia il colore di sfondo -->
+                <li class="hover:bg-blue-800 p-2 rounded-full"><a href="#postazioni">Postazioni</a></li> <!-- voce di menu per le postazioni, con le stesse classi di stile del catalogo -->
+                <li class="hover:bg-blue-800 p-2 rounded-full"><a href="#chat">Chat</a></li> <!-- voce di menu per la chat, con le stesse classi di stile del catalogo -->
             </ul>
         </nav>
 
@@ -47,37 +47,37 @@
     </div>
     <div class="flex flex-row items-center justify-center gap-12 p-8"> <!-- sezione informativa sotto la hero, con disposizione in orizzontale, allineamento verticale al centro, centratura degli elementi, spazio tra gli elementi e padding -->
         <div class="bg-gray-200 p-8 rounded-xl"> <!-- card informativa, con sfondo grigio chiaro, padding e bordi arrotondati -->
-            <p class="hero__info__text"><span class="text-3xl text-blue-800 font-bold  ">12000+</span></br>Volumi in catalogo</p>
+            <p class="hero__info__text"><span class="text-3xl text-blue-800 text-center font-bold  ">12000+</span></br>Volumi in catalogo</p> <!-- testo informativo sulla quantità di volumi in catalogo, con dimensione del testo 3xl, colore blu scuro e grassetto -->
         </div>
         <div class="bg-gray-200 p-8 rounded-xl">
-            <p class="hero__info__text"><span class="text-3xl text-blue-800 font-bold">36</span></br>Postazioni Studio</p>
+            <p class="hero__info__text"><span class="text-3xl text-blue-800 text-center font-bold">36</span></br>Postazioni Studio</p>
         </div>
         <div class="bg-gray-200 p-8 rounded-xl">
-            <p class="hero__info__text"><span class="text-3xl text-blue-800 font-bold">8:00-22:00</span></br>Orari di Apertura</p>
+            <p class="hero__info__text"><span class="text-3xl text-blue-800 text-center font-bold">8:00-22:00</span></br>Orari di Apertura</p>
         </div>
         <div class="bg-gray-200 p-8 rounded-xl">
-            <p class="hero__info__text"><span class="text-3xl text-blue-800 font-bold">3</span></br>Aule disponibili</p>
+            <p class="hero__info__text"><span class="text-3xl text-blue-800 text-center font-bold">3</span></br>Aule disponibili</p>
         </div>
     </div>
 </section>
 
 <main class="main">
     <section class="main__catalogo" id="catalogo">
-        <h1 class="main__catalogo__title">Catalogo Libri</h1>
-        <p class="main__catalogo__subtitle">Sfoglia l'intera collezione</p>
-        <div class="catalogo__cerca">
-            <label class="catalogo__cerca__label" for="catalogo__cerca">
-                <i class="fa-solid fa-magnifying-glass"></i>
+        <h1 class="text-4xl font-bold text-center">Catalogo Libri</h1> <!-- titolo della sezione catalogo, con dimensione del testo 4xl, grassetto e centrato -->
+        <p class="text-lg text-center">Sfoglia l'intera collezione</p> <!-- sottotitolo della sezione catalogo, con dimensione del testo grande e centrato -->
+        <div class="catalogo__cerca flex justify-between m-6 bg-gray-200 p-4 rounded-full"> <!-- sezione di ricerca, con disposizione in orizzontale, allineamento tra gli elementi e bordi arrotondati -->
+            <label class="catalogo__cerca__label" for="catalogo__cerca"> <!-- etichetta per il campo di ricerca, associata all'input tramite l'attributo for -->
+                <i class="fa-solid fa-magnifying-glass"></i> <!-- icona di ricerca, utilizzando Font Awesome -->
             </label>
 
-            <input type="search" id="catalogo__cerca" class="catalogo__cerca__input" placeholder="Cerca titolo o autore..."/>
+            <input type="search" id="catalogo__cerca" class="catalogo__cerca__input w-7/9" placeholder="Cerca titolo o autore..."/> <!-- campo di ricerca, con tipo search, id associato all'etichetta, classi per lo stile e un placeholder per indicare cosa cercare -->
 
-            <input type="checkbox" id="disponibili" class="catalogo__cerca__checkbox">Solo Disponibili</input>
+            <div><input type="checkbox" id="disponibili" class="catalogo__cerca__checkbox">Solo Disponibili</input></div>
         </div>
 
-        <div class="catalogo__filtri">
-            <div class="catalogo__filtri__button">
-                <input type="radio" value ="tutti" id="tutti" name="filtri" checked/> <label for="tutti">Tutti</label>
+        <div class="catalogo__filtri flex justify-center m-6"> <!-- sezione dei filtri, con disposizione in orizzontale, centratura degli elementi e spazio tra di loro -->
+            <div class="catalogo__filtri__button flex flex-wrap gap-4"> <!-- contenitore per i pulsanti dei filtri, con disposizione in orizzontale e spazio tra di loro -->
+                <input type="radio" value ="tutti" id="tutti" name="filtri"/> <labelfor="tutti">Tutti</label>
                 <input type="radio" value ="informatica" id="informatica" name="filtri"/> <label for="informatica">Informatica</label>
                 <input type="radio" value = "storia" id="storia" name="filtri"/> <label for="storia">Storia</label>
                 <input type="radio" value ="italiano" id="italiano" name="filtri"/> <label for="italiano">Italiano</label>
@@ -89,7 +89,7 @@
     </section>
 
     <section class="main__postazioni" id="postazioni">
-        <h1 class="main__postazioni__title">Postazioni di Studio</h1>
+        <h1 class="text-4xl font-bold text-center">Postazioni di Studio</h1>
         <p class="main__postazioni__subtitle">Seleziona aula, data e orario — poi clicca sulla postazione</p>
         <div class="prenotazione__postazione">
             <label for="date__postazione">Seleziona Data: </label></br><span><input type="date" id="date__postazione" class="prenotazione__postazione__date" required/></span> <!-- inserisci value= (oggi) con javascript-->
