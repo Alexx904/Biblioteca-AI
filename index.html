@@ -13,40 +13,51 @@
 </head>
 <body>
 
-<header class="header">
-    <div class="flex items-center justify-between bg-blue-600 p-4">
-        <a class="flex items-center gap-2" href="index.html">
-            <img class="rounded-full" src="img/logo.png" alt="logo" width="100px" height="70px">
-            <h1 class="text-5xl font-bold text-white italic">Biblioteca</h1>
+<header class="sticky top-0 z-50"> <!-- header con posizione sticky per rimanere sempre visibile durante lo scroll, z-50 per assicurarsi che sia sopra altri elementi -->
+    <div class="flex items-center justify-between bg-blue-600 p-4 "> <!-- flex per disporre gli elementi in orizzontale, items-center per allinearli verticalmente, justify-between per distribuire lo spazio tra di loro, bg-blue-600 per il colore di sfondo, p-4 per il padding -->
+        <a class="flex items-center gap-2" href="index.html"> <!-- logo e titolo della biblioteca, disposti in orizzontale con un gap di 2 tra di loro -->
+            <img class="rounded-full" src="img/logo.png" alt="logo" width="100px" height="70px"> <!-- logo della biblioteca, con bordi arrotondati, dimensioni specificate -->
+            <h1 class="text-5xl font-bold text-white italic">Biblioteca</h1> <!-- titolo della biblioteca, con dimensione del testo 5xl, grassetto, colore bianco e corsivo -->
         </a>
         
 
         <nav class="header__nav">
-            <ul class="flex gap-12 text-white text-lg font-medium">
-                <li class="bg-blue-600 p-2 rounded-full hover:bg-blue-800"><a href="index.html#catalogo">Catalogo</a></li>
-                <li class="bg-blue-600 p-2 rounded-full hover:bg-blue-800"><a href="#postazioni">Postazioni</a></li>
-                <li class="bg-blue-600 p-2 rounded-full hover:bg-blue-800"><a href="#chat">Chat</a></li>
+            <ul class="flex gap-12 text-white text-lg font-medium"> <!-- menu di navigazione, disposto in orizzontale con un gap di 12 tra gli elementi, testo bianco, dimensione del testo grande e spessore del font medio -->
+                <li class="bg-blue-600 p-2 rounded-full hover:bg-blue-800"><a href="#catalogo">Catalogo</a></li> <!-- voce di menu per il catalogo, con sfondo blu, padding, bordi arrotondati e effetto hover che cambia il colore di sfondo -->
+                <li class="bg-blue-600 p-2 rounded-full hover:bg-blue-800"><a href="#postazioni">Postazioni</a></li> <!-- voce di menu per le postazioni, con le stesse classi di stile del catalogo -->
+                <li class="bg-blue-600 p-2 rounded-full hover:bg-blue-800"><a href="#chat">Chat</a></li> <!-- voce di menu per la chat, con le stesse classi di stile del catalogo -->
             </ul>
         </nav>
 
-        <button class="bg-blue-700 hover:bg-yellow-500 text-yellow-500 hover:text-blue-600 font-bold p-2 rounded-full">Login/Signup</button>
+        <button class="bg-blue-700 hover:bg-yellow-500 text-yellow-500 hover:text-blue-600 font-bold p-2 rounded-full">Login/Signup</button> <!-- pulsante di login/signup, con sfondo blu, effetto hover che cambia il colore di sfondo e del testo, testo in grassetto, padding e bordi arrotondati -->
     </div>
 </header>
 
 <section class="hero">
-    <h1 class="3xl>Biblioteca</h1>
-    <p class="hero__text">Prenota libri, riserva postazioni di studio. La tua biblioteca è sempre con te.</p>
-    <img class="hero__image" src="img/hero.jpg" alt="hero">
-    <ul class="hero__link">
-        <li><a href="#catalogo">Esplora il catalogo</a></li>
-        <li><a href="#postazioni">Prenota postazione</a></li>
-    </ul>
-
-    <div class="hero__info">
-        <p class="hero__info__text"><span class="hero__info__number">12000+</span></br>Volumi in catalogo</p>
-        <p class="hero__info__text"><span class="hero__info__number">36</span></br>Postazioni Studio</p>
-        <p class="hero__info__text"><span class="hero__info__number">8:00-22:00</span></br>Orari di Apertura</p>
-        <p class="hero__info__text"><span class="hero__info__number">3</span></br>Aule disponibili</p>
+    <div class=" flex flex-row items-center justify-between gap-8 p-12"> <!-- sezione hero, con disposizione in orizzontale, allineamento verticale al centro, spazio tra gli elementi, padding -->
+        <div class="flex flex-col gap-6"> <!-- contenuto testuale della sezione hero, disposto in verticale con un gap di 6 tra gli elementi -->
+            <h1 class="text-6xl font-bold text-black">Biblioteca</h1> <!-- titolo principale della sezione hero, con dimensione del testo 6xl, grassetto e colore nero -->
+            <p class="hero__text">Prenota libri, riserva postazioni di studio. La tua biblioteca è sempre con te.</p> 
+            <ul class="flex flex-row gap-8 text-lg font-medium"> <!-- elenco di link per esplorare il catalogo e prenotare postazioni, disposto in orizzontale con un gap di 8 tra gli elementi, testo di dimensione grande e spessore del font medio -->
+                <li class="hover:bg-grey-200 rounded-full p-2"><a href="#catalogo">Esplora il catalogo</a></li> <!-- voce di menu per esplorare il catalogo, con effetto hover che cambia il colore di sfondo, bordi arrotondati e padding -->
+                <li class="hover:bg-bgrey-200 rounded-full p-2"><a href="#postazioni">Prenota postazione</a></li> <!-- voce di menu per prenotare una postazione, con le stesse classi di stile del catalogo -->
+            </ul>
+        </div>
+        <img class="w-1/2" src="img/hero.jpg" alt="hero"> <!-- immagine della sezione hero, con larghezza del 50% del contenitore (metà pagina) -->
+    </div>
+    <div class="flex flex-row items-center justify-center gap-12 p-8"> <!-- sezione informativa sotto la hero, con disposizione in orizzontale, allineamento verticale al centro, centratura degli elementi, spazio tra gli elementi e padding -->
+        <div class="bg-gray-200 p-8 rounded-xl"> <!-- card informativa, con sfondo grigio chiaro, padding e bordi arrotondati -->
+            <p class="hero__info__text"><span class="text-3xl text-blue-800 font-bold  ">12000+</span></br>Volumi in catalogo</p>
+        </div>
+        <div class="bg-gray-200 p-8 rounded-xl">
+            <p class="hero__info__text"><span class="text-3xl text-blue-800 font-bold">36</span></br>Postazioni Studio</p>
+        </div>
+        <div class="bg-gray-200 p-8 rounded-xl">
+            <p class="hero__info__text"><span class="text-3xl text-blue-800 font-bold">8:00-22:00</span></br>Orari di Apertura</p>
+        </div>
+        <div class="bg-gray-200 p-8 rounded-xl">
+            <p class="hero__info__text"><span class="text-3xl text-blue-800 font-bold">3</span></br>Aule disponibili</p>
+        </div>
     </div>
 </section>
 
