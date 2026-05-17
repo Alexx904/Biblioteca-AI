@@ -1,0 +1,247 @@
+:root{
+
+}
+/* modifiche per schermi più piccoli */
+.hamburger {
+    display: none;
+    font-size: 25px;       /* Grandezza dei trattini */
+    background: none;      /* Rimuove lo sfondo del bottone */
+    border: none;          /* Rimuove i bordi del bottone */
+    cursor: pointer;
+    color: #1f375e;        /* Colore dei trattini */
+}
+@media (max-width: 1300px) {
+
+    .hamburger {
+        display: block;
+    }
+
+    .header__nav {
+        display: none;             /* Nasconde il menu di default */
+        position: absolute;        /* Lo "stacca" dal normale flusso della pagina */
+        top: 120px;                 /* Lo posiziona subito sotto l'header */
+        left: 0;
+        width: 100%;               /* Gli fa occupare tutta la larghezza dello schermo */
+        background-color: #95addf; /* Sfondo del men */
+        box-shadow: 0 10px 10px rgba(0,0,0,0.1); /* Ombreggiatura sotto il menu */
+        padding: auto;           /* Spazio interno */
+    }
+
+    .header__nav-list {
+        flex-direction: column;    /* Impila i link verticalmente */
+        align-items: center;
+        gap: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    .header__nav-list li {
+        width: 100%;
+        text-align: center;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .header__nav.open {
+        display: flex;
+    }
+}
+
+/* fine modifica display più piccoli */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;           /* Lo tiene in primo piano rispetto agli altri elementi che scorrono sotto */
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header__container {
+    display: flex;                      /* Mette logo e nav sulla stessa riga */
+    justify-content: space-between;     /* Spinge il logo a sinistra e la nav a destra */
+    align-items: center;                /* Li allinea al centro verticalmente */
+    padding: 10px 30px;                 /* Aggiunge un po' di spazio dai bordi dello schermo */
+    border-block: solid;
+    border-block-color: cornflowerblue;
+    background-color: #95addf;
+}
+
+/* css header e nav */
+.header__logo {
+    display: flex;
+    align-items: center; /* Centra verticalmente immagine e testo */
+    gap: 10px; /* Aggiunge un po' di spazio tra il logo e la scritta */
+    text-decoration: none; /*toglie la sottolineatura blu tipica dei link */
+    font-weight: bold;
+    font-size: 55px;
+    font-style: italic;
+}
+
+.logo{
+    border-radius: 55%; /*bordo rotondo*/
+    overflow: hidden;
+    border: 5px solid black;
+    object-fit: cover; /*rimpimento del cerchio */
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0; /* non schiaccia il logo */
+}
+
+.header__nav-list {
+    display: flex;       /* Dispone i link in orizzontale */
+    align-items: center; /* Li centra verticalmente */
+    gap: 100px;           /* Crea lo spazio tra una voce e l'altra */
+    list-style: none;    /* Giusto: rimuove i pallini */
+    font-weight: bold;
+    margin: 0;           /* rimuove i margini di default della lista */
+    padding: 0;          /* rimuove il padding di default della lista */
+    font-size: 20px;
+}
+
+.header__nav-list a {
+    text-decoration: none;
+    padding: 7px 10px;
+    border-radius: 70px;
+    border-block: 3px solid transparent;
+    transition: 0.7s;
+}
+.header__nav-list a:hover {
+    border-block-color: #1f375e;
+}
+
+.buttonNav {
+    cursor: pointer;
+    background-color: #b4f6f8;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.buttonNav:hover {
+    background-color: #5cb85c;
+    transition: 0.7s;
+}
+
+/*bottone Registrazione */
+.hidden {
+    display: none !important; /*forzatura per nascondere*/
+}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5); /* sfodno nero semitrasparente*/
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-box {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 350px;
+}
+
+.close {
+    float: right; /* spostamento a destra della x*/
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    background: #eee;
+    border-radius: 20px;
+}
+
+.tabs .active {
+    background: #1f4b7a;
+    color: white;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+}
+
+form button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 20px;
+    background: #1f4b7a;
+    color: white;
+}
+
+/* Logout UTENTE */
+
+.profilo__Utente{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.user__info{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 50px;
+    background: #f0f0f0;
+    transition: 0.5s;
+    color: #1f375e;
+}
+
+.user__info:hover{
+    background: #e0e0e0;
+}
+
+.user__icon{
+    font-size: 1.2rem;
+}
+
+.logout__utente{
+    position: absolute;
+    top: 110%; /* Lo posiziona esattamente sotto il nome */
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 10px;
+    z-index: 1000;
+    min-width: 120px;
+}
+
+.logout__utente button{
+    background-color: darkred;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.logout__utente button:hover{
+    background: #c82333;
+}
