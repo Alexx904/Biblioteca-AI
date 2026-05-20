@@ -1,4 +1,5 @@
 import NavBar from "./NavBar";
+import Auth from "./Auth";
 
 function Header(){
     return(
@@ -9,6 +10,7 @@ function Header(){
                 <span>Biblioteca</span>
                 </a>
                 <NavBar/>
+                <Auth/>
             </div>
         </header>
     );
