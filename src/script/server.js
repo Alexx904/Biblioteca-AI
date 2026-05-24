@@ -8,7 +8,6 @@ app.use(express.json()); //ricezione di json da parte del server
 
 app.use(cors()); //comunicazione col server
 
-
 // collegamento a mongo via url
 const uri = "mongodb+srv://uomodaffari8_db_user:progettoweb@biblioteca.dr76c86.mongodb.net/?appName=Biblioteca";
 
