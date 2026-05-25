@@ -5,7 +5,7 @@ import { Stack,AppBar,Toolbar,Typography, Button } from "@mui/material";
 function Header(){
     return(
         /* AppBar con colori personalizzati che gestisce il posizionamento, l'ombra e i colori della Navbar. */
-        <AppBar position="sticky" sx={{ backgroundColor: '#1a2e46', color: '#ffffff' }}>
+        <AppBar position="sticky" sx={{ backgroundColor: '#253f5e', color: '#ffffff' }}>
             {/* Toolbar con justifyContent: 'space-between' per distribuire gli elementi (logo a sinistra, NavLinks al centro, Login a destra). */}
             <Toolbar  sx={{justifyContent: 'space-between', m: 1}}>   
                 <a className="header__logo" href="index.html">
@@ -24,7 +24,7 @@ function Header(){
                     {/* Bottone per il pulsante di Login. */}
                 <Button variant="contained" color="primary" id="openPopup" sx={{ 
                   backgroundColor: '#d4b86a', 
-                  color: '#1a2e46',
+                  color: '#253f5e',
                   fontWeight: 'bold',
                   '&:hover': { backgroundColor: '#c2a558' }
                 }}>
