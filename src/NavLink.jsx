@@ -1,5 +1,8 @@
+import Button from '@mui/material/Button';
 export default function NavLink(props){
     return(
-        <li><a href={props.link}>{props.name}</a></li>
+        <Button href={props.link} variant="text" sx={{ color: '#ffffff' }}>
+            {props.name}
+        </Button>
     )
 }
