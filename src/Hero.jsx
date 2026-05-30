@@ -36,29 +36,27 @@ function Hero(){
                 </Typography>
             
                 <Typography variant="subtitle1" sx={{color:"text.secondary", mb: 4, fontSize: '1.25rem' }}> 
-              Prenota libri, riserva postazioni di studio, chatta.
-                <br /> La tua biblioteca è sempre con te.
+                  Prenota libri, riserva postazioni di studio, chatta.
+                  <br /> La tua biblioteca è sempre con te.
                 </Typography>
             
                 {/* Bottoni */}
-                <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
+                <Stack direction="row" spacing={2} useFlexGap sx={{ mb: 4, flexWrap: 'wrap' }}> {/*flexWrap permette ai bottoni di andare a capo se lo schermo è troppo stretto*/}
                   <Button variant="contained"
-                  href="#catalogo"
-                  startIcon={<BookmarksIcon />} 
-                  color="primary"
-                  fullWidth
-                  size='large'
-                  sx={{fontWeight: 'bold', '&:hover': { color: 'secondary.light' } }}> 
-                  Esplora il Catalogo
+                    href="#catalogo"
+                    startIcon={<BookmarksIcon />} 
+                    color="primary"                    
+                    size='large'
+                    sx={{fontWeight: 'bold',flex:1, minWidth: 255, '&:hover': { color: 'secondary.light' } }}> {/* flex:1 e minWidth insieme permettono ai bottoni di espandersi in modo uniforme e di andare a capo se lo schermo è troppo stretto*/}
+                    Esplora il Catalogo
                   </Button>
                   <Button 
                     variant="outlined"                
                     href="#postazioni"
                     startIcon={<ChairAltIcon />}
-                    color="primary"
-                    fullWidth
+                    color="primary"                    
                     size='large'
-                    sx={{fontWeight: 'bold', '&:hover': {color: 'secondary.main' } }}>
+                    sx={{fontWeight: 'bold',flex:1, minWidth: 255, '&:hover': {color: 'secondary.main' } }}>
                     Prenota Postazione
                   </Button>
                 </Stack>
@@ -74,38 +72,11 @@ function Hero(){
               </Box>              
             </Box>
             {/* Sezione Info: Volumi, Postazioni, Orari */}
-            <Stack direction="row" spacing={2}>
-              {/* Card Principale: Volumi */}
-              <Card  sx={{backgroundColor: 'background.card',border: '1px solid ', borderRadius: 4 }}>
-                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Box>
-                    <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Volumi in catalogo</Typography>
-                    <Typography variant="h4" sx={{ fontWeight: 'bold' }}>12.000+</Typography>
-                  </Box>
-                  <Chip label="Aggiornato" color="success" size="small" sx={{ backgroundColor: '#a4d4b4', color: 'text.primary', fontWeight: 'bold' }} />
-                </CardContent>
-              </Card>
-
-                {/* Due card affiancate per Postazioni e Orari */}
-                <Stack direction="row" spacing={2}>
-                  <Card sx={{ flex: 1, backgroundColor: 'background.card', color: 'text.primary', border: '1px solid ', borderRadius: 4 }}>
-                    <CardContent>
-                      <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Postazioni Studio</Typography>
-                      <Typography variant="h5" sx={{ fontWeight: 'bold' }}>36</Typography>
-                      <Typography variant="caption" sx={{ color: '#a4d4b4' }}>3 aule disponibili</Typography>
-                    </CardContent>
-                  </Card>
-
-                  <Card sx={{ flex: 1, backgroundColor: 'background.card', color: 'text.primary', border: '1px solid ', borderRadius: 4 }}>
-                    <CardContent>
-                      <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Orari di Apertura</Typography>
-                      <Typography variant="h5" sx={{ fontWeight: 'bold' }}>8:00 - 22:00</Typography>
-                      <Typography variant="caption" sx={{ color: '#d4b86a' }}>Aperto ora</Typography>
-                    </CardContent>
-                  </Card>
-                </Stack>
-                <HeroCard title="Titolo Test" value="100" />
-              </Stack>
+            <Stack direction={'row'} spacing={2} useFlexGap sx={{flexWrap:'wrap'}}> {/*flexWrap serve per mandare a capo gli elementi dello stack se non c'è spazio */}
+              <HeroCard title='Volumi in catalago' value='12000'/>
+              <HeroCard title='Postazioni studio' value='30'/>
+              <HeroCard title='Orario di apertura' value='8:00-20:00'/>
+            </Stack>
           </Container>
         </Box>
   );
