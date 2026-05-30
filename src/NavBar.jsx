@@ -12,7 +12,7 @@ function NavBar(){
     }
 
     return(
-        <Stack direction="row" alignItems="center" spacing={2}>
+        <Stack direction="row" alignItems="center" spacing={2} sx={{display: { xs: 'none', md: 'flex' }}}> {/*Stack che contiene i NavLink. display none su schermi piccoli, flex su schermi più grandi*/}
             <NavLink name="Catalogo" link="#catalogo"/>
             <NavLink name="Postazioni" link="#postazioni"/>
             <NavLink name="Chat" link="#chat"/>

@@ -1,22 +1,22 @@
 import NavBar from "./NavBar";
 import Auth from "./Auth";
-import { Stack,AppBar,Toolbar,Typography, Button } from "@mui/material";
+import { Stack,AppBar,Toolbar,Typography, Button, Box, Avatar } from "@mui/material";
 
 function Header(){
     return(
         /* AppBar con colori personalizzati che gestisce il posizionamento, l'ombra e i colori della Navbar. */
         <AppBar position="sticky" color="primary">
             {/* Toolbar con justifyContent: 'space-between' per distribuire gli elementi (logo a sinistra, NavLinks al centro, Login a destra). */}
-            <Toolbar  sx={{justifyContent: 'space-between', m: 1}}>   
-                <a className="header__logo" href="index.html">
+            <Toolbar  sx={{justifyContent: 'space-between', m: 0.5}}>   
+                <Box component="a" href="index.html">
                     {/* Primo Stack per il logo e il titolo. */}
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                        <img className="logo" src="img/logo.png" alt="logo" width="80px" height="80px"/>
-                        <Typography variant="h3" sx={{fontFamily: 'serif', fontWeight: 'bold'}}>
+                    <Stack direction="row" spacing={2} sx={{alignItems: 'center'}}>
+                        <Avatar src="img/logo.png" alt="logo" sx={{height:50, width:50}}  />
+                        <Typography variant="h5" sx={{fontFamily: 'serif', fontWeight: 'bold', display: { xs:'none', md: 'block' } }}>
                             Biblioteca
                         </Typography>
                     </Stack>
-                </a>
+                </Box>
                 {/* Secondo elemento della NavBar: i NavLinks. */}
                 
                 <NavBar/>                    
