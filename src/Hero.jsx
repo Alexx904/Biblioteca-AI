@@ -27,7 +27,7 @@ function Hero(){
                 }} 
                 /> */}
             
-                <Typography variant="h2" component="h1" sx={{ fontWeight: 'bold', mb: 2, fontFamily: 'serif' }}>
+                <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold', fontFamily: 'serif' }}>
                Biblioteca 
                 <Typography variant="h2" component="h1" sx={{fontWeight: 'bold', fontFamily: 'serif', color:'secondary.main' }}>
                 Universitaria
@@ -35,7 +35,7 @@ function Hero(){
                 Digitale
                 </Typography>
             
-                <Typography variant="subtitle1" sx={{color:"text.secondary", mb: 4, fontSize: '1.25rem' }}> 
+                <Typography variant="subtitle1" gutterBottom sx={{color:"text.secondary", fontSize: '1.25rem' }}> 
                   Prenota libri, riserva postazioni di studio, chatta.
                   <br /> La tua biblioteca è sempre con te.
                 </Typography>
