@@ -1,6 +1,7 @@
 import { Box, Container, Grid, Typography, Button, Stack, Card, CardContent, Chip } from '@mui/material';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import ChairAltIcon from '@mui/icons-material/ChairAlt';
+import HeroCard from './HeroCard';
 
 
 function Hero(){
@@ -45,7 +46,8 @@ function Hero(){
                   href="#catalogo"
                   startIcon={<BookmarksIcon />} 
                   color="primary"
-                  fullWidth 
+                  fullWidth
+                  size='large'
                   sx={{fontWeight: 'bold', '&:hover': { color: 'secondary.light' } }}> 
                   Esplora il Catalogo
                   </Button>
@@ -55,6 +57,7 @@ function Hero(){
                     startIcon={<ChairAltIcon />}
                     color="primary"
                     fullWidth
+                    size='large'
                     sx={{fontWeight: 'bold', '&:hover': {color: 'secondary.main' } }}>
                     Prenota Postazione
                   </Button>
@@ -66,27 +69,26 @@ function Hero(){
                   component="img"
                   src="img/hero.jpg"
                   alt="Foto Biblioteca"
-                  sx={{ width: '100%', height: '100%', borderRadius: 2, boxShadow: 3, objectFit: 'cover' }}
+                  sx={{ width: '100%', height: '100%', borderRadius: 4, boxShadow: 5, objectFit: 'cover' }}
                 />
-              </Box>
-
-              
+              </Box>              
             </Box>
+            {/* Sezione Info: Volumi, Postazioni, Orari */}
             <Stack direction="row" spacing={2}>
-                {/* Card Principale: Volumi */}
-                <Card  sx={{backgroundColor: 'background.card',border: '1px solid ', borderRadius: 3 }}>
-                  <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Box>
-                      <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Volumi in catalogo</Typography>
-                      <Typography variant="h4" sx={{ fontWeight: 'bold' }}>12.000+</Typography>
-                    </Box>
-                    <Chip label="Aggiornato" color="success" size="small" sx={{ backgroundColor: '#a4d4b4', color: 'text.primary', fontWeight: 'bold' }} />
-                  </CardContent>
-                </Card>
+              {/* Card Principale: Volumi */}
+              <Card  sx={{backgroundColor: 'background.card',border: '1px solid ', borderRadius: 4 }}>
+                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Box>
+                    <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Volumi in catalogo</Typography>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold' }}>12.000+</Typography>
+                  </Box>
+                  <Chip label="Aggiornato" color="success" size="small" sx={{ backgroundColor: '#a4d4b4', color: 'text.primary', fontWeight: 'bold' }} />
+                </CardContent>
+              </Card>
 
                 {/* Due card affiancate per Postazioni e Orari */}
                 <Stack direction="row" spacing={2}>
-                  <Card sx={{ flex: 1, backgroundColor: 'background.card', color: 'text.primary', border: '1px solid ', borderRadius: 3 }}>
+                  <Card sx={{ flex: 1, backgroundColor: 'background.card', color: 'text.primary', border: '1px solid ', borderRadius: 4 }}>
                     <CardContent>
                       <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Postazioni Studio</Typography>
                       <Typography variant="h5" sx={{ fontWeight: 'bold' }}>36</Typography>
@@ -94,7 +96,7 @@ function Hero(){
                     </CardContent>
                   </Card>
 
-                  <Card sx={{ flex: 1, backgroundColor: 'background.card', color: 'text.primary', border: '1px solid ', borderRadius: 3 }}>
+                  <Card sx={{ flex: 1, backgroundColor: 'background.card', color: 'text.primary', border: '1px solid ', borderRadius: 4 }}>
                     <CardContent>
                       <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Orari di Apertura</Typography>
                       <Typography variant="h5" sx={{ fontWeight: 'bold' }}>8:00 - 22:00</Typography>
@@ -102,7 +104,8 @@ function Hero(){
                     </CardContent>
                   </Card>
                 </Stack>
-            </Stack>
+                <HeroCard title="Titolo Test" value="100" />
+              </Stack>
           </Container>
         </Box>
   );
