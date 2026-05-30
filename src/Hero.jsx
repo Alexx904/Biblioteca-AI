@@ -5,135 +5,106 @@ import ChairAltIcon from '@mui/icons-material/ChairAlt';
 
 function Hero(){
     return(
-        <Box 
-      component="section" 
-      sx={{ 
-        
-        py: { xs: 6, md: 10 },
-        overflow: 'hidden'
-      }}
-        >
-      <Container maxWidth="lg"> {/*Limita la larghezza (maxWidth="lg"): Evita che il testo e le immagini si allunghino troppo sui monitor molto larghi, migliorando la leggibilità.*/}
-        
-        <Box sx={{ 
-          display: 'flex', 
-          flexDirection: { xs: 'column', md: 'row' },
-          alignItems: 'flex-start',
-          gap: 6
-        }}>
+        <Box component="section" sx={{py:6, overflow: 'hidden'}}> {/*Box che contiene tutta la sezione Hero. Padding verticale per saccare dalla NavBar e overflow hidden nasconde gli elementi che escono dalla box*/}
+          <Container maxWidth="lg"> {/*Limita la larghezza (maxWidth="lg"): Evita che il testo e le immagini si allunghino troppo sui monitor molto larghi, migliorando la leggibilità. Mette i contenuti al centro*/}
+            {/* Box che contiente sezione sinistra(Testi e pulsanti) e destra(immagine) */}
+            <Box sx={{
+              display: 'flex', 
+              flexDirection: { xs: 'column', md: 'row' }, //Elementi in colonna su schermi piccoli, affiancati su schermi più grandi
+              alignItems: 'stretch', //Allinea le due colonne in altezza, evitando che una sia più alta dell'altra
+              gap: 6 //spazio tra le due colonne (testo e immagine)
+              }}> 
 
-          {/* COLONNA SINISTRA: Testi e Pulsanti */}
-          <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Chip 
-              label="UNIVERSITÀ DEGLI STUDI" 
-              sx={{                 
+              {/* COLONNA SINISTRA: Testi e Pulsanti */}
+              <Box sx={{flex: 1, minWidth: 0}}> {/*flex:1 permette alla colonna di occupare tutto lo spazio disponibile, minWidth:0 evita che il testo si restringa troppo su schermi piccoli*/}
+                {/* <Chip 
+                label="UNIVERSITÀ DEGLI STUDI" 
+                sx={{                 
                 mb: 3, 
                 fontWeight: 'bold',
                 letterSpacing: 1
-              }} 
-            />
+                }} 
+                /> */}
             
-            <Typography 
-              variant="h2" 
-              component="h1" 
-              sx={{ fontWeight: 800, mb: 2, fontFamily: 'serif' }}
-            >
-              Biblioteca <br/>
-              <Typography variant="h2" component="h1" sx={{color: "secondary.main", fontWeight: 800, fontFamily: 'serif' }}>
+                <Typography variant="h2" component="h1" sx={{ fontWeight: 'bold', mb: 2, fontFamily: 'serif' }}>
+               Biblioteca 
+                <Typography variant="h2" component="h1" sx={{fontWeight: 'bold', fontFamily: 'serif', color:'secondary.main' }}>
                 Universitaria
-              </Typography>
-              Digitale
-            </Typography>
+                </Typography>
+                Digitale
+                </Typography>
             
-            <Typography variant="body1" sx={{color:"text.secondary", mb: 4, fontSize: '1.1rem' }}>
+                <Typography variant="subtitle1" sx={{color:"text.secondary", mb: 4, fontSize: '1.25rem' }}> 
               Prenota libri, riserva postazioni di studio, chatta.
-              <br/>La tua biblioteca è sempre con te.
-            </Typography>
+                <br /> La tua biblioteca è sempre con te.
+                </Typography>
             
-            {/* Sostituisce la tua <ul> con gli <a> */}
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 5 }}>
-              <Button 
-                variant="contained" 
-                size="large"
-                href="#catalogo"
-                startIcon={<BookmarksIcon />}
-                color="primary"
-                
-                sx={{                   
-                  fontWeight: 'bold',
-                   '&:hover': { color: 'secondary.main' } 
-                }}
-              >
-                Esplora il Catalogo
-              </Button>
-              <Button 
-                variant="outlined" 
-                size="large"
-                href="#postazioni"
-                startIcon={<ChairAltIcon />}
-                color="primary"
-                sx={{ 
-                  
-                   '&:hover': {borderColor: 'secondary.main', color: 'secondary.main' } 
-                }}
-              >
-                Prenota Postazione
-              </Button>
-            </Stack>
+                {/* Bottoni */}
+                <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
+                  <Button variant="contained"
+                  href="#catalogo"
+                  startIcon={<BookmarksIcon />} 
+                  color="primary"
+                  fullWidth 
+                  sx={{fontWeight: 'bold', '&:hover': { color: 'secondary.light' } }}> 
+                  Esplora il Catalogo
+                  </Button>
+                  <Button 
+                    variant="outlined"                
+                    href="#postazioni"
+                    startIcon={<ChairAltIcon />}
+                    color="primary"
+                    fullWidth
+                    sx={{fontWeight: 'bold', '&:hover': {color: 'secondary.main' } }}>
+                    Prenota Postazione
+                  </Button>
+                </Stack>
+              </Box>
+              {/* COLONNA DESTRA: immagine hero */}
+              <Box sx={{ flex: 1, minWidth: 0, display: 'flex', mb:4 }}> 
+                <Box
+                  component="img"
+                  src="img/hero.jpg"
+                  alt="Foto Biblioteca"
+                  sx={{ width: '100%', height: '100%', borderRadius: 2, boxShadow: 3, objectFit: 'cover' }}
+                />
+              </Box>
 
+              
+            </Box>
             <Stack direction="row" spacing={2}>
-              {/* Card Principale: Volumi */}
-              <Card  sx={{backgroundColor: 'background.card',border: '1px solid ', borderRadius: 3 }}>
-                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Box>
-                    <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Volumi in catalogo</Typography>
-                    <Typography variant="h4" sx={{ fontWeight: 'bold' }}>12.000+</Typography>
-                  </Box>
-                  <Chip label="Aggiornato" color="success" size="small" sx={{ backgroundColor: '#a4d4b4', color: 'text.primary', fontWeight: 'bold' }} />
-                </CardContent>
-              </Card>
-
-              {/* Due card affiancate per Postazioni e Orari */}
-              <Stack direction="row" spacing={2}>
-                <Card sx={{ flex: 1, backgroundColor: 'background.card', color: 'text.primary', border: '1px solid ', borderRadius: 3 }}>
-                  <CardContent>
-                    <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Postazioni Studio</Typography>
-                    <Typography variant="h5" sx={{ fontWeight: 'bold' }}>36</Typography>
-                    <Typography variant="caption" sx={{ color: '#a4d4b4' }}>3 aule disponibili</Typography>
+                {/* Card Principale: Volumi */}
+                <Card  sx={{backgroundColor: 'background.card',border: '1px solid ', borderRadius: 3 }}>
+                  <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box>
+                      <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Volumi in catalogo</Typography>
+                      <Typography variant="h4" sx={{ fontWeight: 'bold' }}>12.000+</Typography>
+                    </Box>
+                    <Chip label="Aggiornato" color="success" size="small" sx={{ backgroundColor: '#a4d4b4', color: 'text.primary', fontWeight: 'bold' }} />
                   </CardContent>
                 </Card>
 
-                <Card sx={{ flex: 1, backgroundColor: 'background.card', color: 'text.primary', border: '1px solid ', borderRadius: 3 }}>
-                  <CardContent>
-                    <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Orari di Apertura</Typography>
-                    <Typography variant="h5" sx={{ fontWeight: 'bold' }}>8:00 - 22:00</Typography>
-                    <Typography variant="caption" sx={{ color: '#d4b86a' }}>Aperto ora</Typography>
-                  </CardContent>
-                </Card>
-              </Stack>
+                {/* Due card affiancate per Postazioni e Orari */}
+                <Stack direction="row" spacing={2}>
+                  <Card sx={{ flex: 1, backgroundColor: 'background.card', color: 'text.primary', border: '1px solid ', borderRadius: 3 }}>
+                    <CardContent>
+                      <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Postazioni Studio</Typography>
+                      <Typography variant="h5" sx={{ fontWeight: 'bold' }}>36</Typography>
+                      <Typography variant="caption" sx={{ color: '#a4d4b4' }}>3 aule disponibili</Typography>
+                    </CardContent>
+                  </Card>
+
+                  <Card sx={{ flex: 1, backgroundColor: 'background.card', color: 'text.primary', border: '1px solid ', borderRadius: 3 }}>
+                    <CardContent>
+                      <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>Orari di Apertura</Typography>
+                      <Typography variant="h5" sx={{ fontWeight: 'bold' }}>8:00 - 22:00</Typography>
+                      <Typography variant="caption" sx={{ color: '#d4b86a' }}>Aperto ora</Typography>
+                    </CardContent>
+                  </Card>
+                </Stack>
             </Stack>
-          </Box>
-
-          {/* COLONNA DESTRA: immagine hero */}
-          <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Box
-              component="img"
-              src="img/hero.jpg"
-              alt="hero biblioteca"
-              sx={{
-                width: '100%',
-                height: '500px',
-                objectFit: 'cover',
-                borderRadius: 4,
-                boxShadow: 5,
-                display: 'block',
-              }}
-            />
-          </Box>
-
+          </Container>
         </Box>
-      </Container>
-    </Box>
   );
 }
 
