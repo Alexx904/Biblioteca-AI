@@ -5,14 +5,14 @@ import { Stack,AppBar,Toolbar,Typography, Button } from "@mui/material";
 function Header(){
     return(
         /* AppBar con colori personalizzati che gestisce il posizionamento, l'ombra e i colori della Navbar. */
-        <AppBar position="sticky" sx={{ backgroundColor: '#253f5e', color: '#ffffff' }}>
+        <AppBar position="sticky" color="primary">
             {/* Toolbar con justifyContent: 'space-between' per distribuire gli elementi (logo a sinistra, NavLinks al centro, Login a destra). */}
             <Toolbar  sx={{justifyContent: 'space-between', m: 1}}>   
                 <a className="header__logo" href="index.html">
                     {/* Primo Stack per il logo e il titolo. */}
                     <Stack direction="row" alignItems="center" spacing={2}>
-                        <img className="logo" src="img/logo.png" alt="logo" width="100px" height="70px"/>
-                        <Typography variant="h2" sx={{fontFamily: 'serif', fontWeight: 'bold'}}>
+                        <img className="logo" src="img/logo.png" alt="logo" width="80px" height="80px"/>
+                        <Typography variant="h3" sx={{fontFamily: 'serif', fontWeight: 'bold'}}>
                             Biblioteca
                         </Typography>
                     </Stack>
@@ -22,12 +22,7 @@ function Header(){
                 <NavBar/>                    
                 
                     {/* Bottone per il pulsante di Login. */}
-                <Button variant="contained" color="primary" id="openPopup" sx={{ 
-                  backgroundColor: '#d4b86a', 
-                  color: '#253f5e',
-                  fontWeight: 'bold',
-                  '&:hover': { backgroundColor: '#c2a558' }
-                }}>
+                <Button variant="contained" color="secondary" id="openPopup">
                     Login
                 </Button>
                 

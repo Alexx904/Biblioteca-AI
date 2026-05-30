@@ -42,7 +42,7 @@ function Catalogo() {
   });
 
   return (
-    <Box component="section" id="catalogo" sx={{ backgroundColor: '#f5f5f0', py: 8, minHeight: '100vh' }}>
+    <Box component="section" id="catalogo" sx={{py: 8, minHeight: '100vh' }}>
       <Container maxWidth="lg">
 
         {/* TITOLO */}

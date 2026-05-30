@@ -4,25 +4,21 @@ export const lightTheme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            main: '#1a2e46',
-            dark: '#111E2E',
-            light: '#3B5472',
-            contrastText: '#fff',
+            main: '#1A365D',            
+            contrastText: '#ffffff',
             
         },
         secondary: {
-            main: '#DCA743',
-            dark: '#C59432',
-            light: '#E6BD6B',
-            contrastText: '#1a2e46',
+            main: '#0284C7',
+            contrastText: '#fff',
         },
         background: {
-            default: '#FFFFFF',
-            card: '#F8FAFC',
+            default: '#F8FAFC',
+            card: '#FFFFFF',
         },
         text: {
-            primary: '#1a2e46',
-            secondary: '#64748b',
+            primary: '#0F172A',
+            secondary: '#475569',
         },
     },
 });
