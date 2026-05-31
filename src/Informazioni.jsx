@@ -4,6 +4,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LanguageIcon from '@mui/icons-material/Language';
+import SectionTitle from './SectionTitle';
 function Informazioni() {
     // Stile condiviso per tutte le carte
     const cardStyle = {
@@ -23,12 +24,7 @@ function Informazioni() {
             <Container maxWidth="md">
 
                 {/* Titolo e Linea d'accento */}
-                <Box sx={{ textAlign: 'center', mb: 6 }}>
-                    <Typography variant="h2" sx={{ fontWeight: 800, color: '#1a2e46', fontFamily: 'serif', mb: 1 }}>
-                        Dove Trovarci
-                    </Typography>
-                    <Box sx={{ width: 60, height: 3, backgroundColor: '#d4b86a', mx: 'auto' }} />
-                </Box>
+                <SectionTitle title="Dove Trovarci" subtitle="Scopri tutti i nostri contatti" />
 
                 {/* Griglia delle carte */}
                 <Grid container spacing={4} justifyContent="center">

@@ -5,6 +5,7 @@ import {
 } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";;
 import MappaPostazioni from "./MappaPostazioni";
+import SectionTitle from "./SectionTitle";
 
 
 function Postazioni() {
@@ -23,16 +24,7 @@ function Postazioni() {
         <Box component="section" id="postazioni" sx={{ py: 8, bgcolor: '#f8fafc', minHeight: '100vh' }}>
             <Container maxWidth="lg">
 
-                <Box sx={{ textAlign: 'center', mb: 5 }}>
-                    <Typography variant="h2" sx={{ fontWeight: 800, color: '#1a2e46', fontFamily: 'serif', mb: 1 }}>
-                        Postazioni di Studio
-                    </Typography>
-                    {/* Linea oro sotto il titolo */}
-                    <Box sx={{ width: 60, height: 3, backgroundColor: '#d4b86a', mx: 'auto', mb: 2 }} />
-                    <Typography variant="body1" sx={{ color: '#6b7280', fontStyle: 'italic', fontSize: '1.1rem' }}>
-                        Seleziona aula, data e orario — poi clicca sulla postazione
-                    </Typography>
-                </Box>
+                <SectionTitle title="Postazioni di Studio" subtitle="Seleziona aula, data e orario — poi clicca sulla postazione"/>
 
                 {/* BARRA FILTRI */}
                 <Paper elevation={0} sx={{
