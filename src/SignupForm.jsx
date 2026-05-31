@@ -73,12 +73,12 @@ export default function SignupForm({ onLoginSuccess }) {
 
   return (
     <Box sx={{ p: 3, textAlign: "center" }}>
-      <Typography color="primary" variant="h5" gutterBottom sx={{ fontWeight: "bold", fontFamily: "serif" }}>
+      <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2, fontFamily: "serif" }}>
         Biblioteca
       </Typography>
 
       {/* Le Tab Accedi/Registrati */}
-      <Tabs indicatorColor="secondary" value={tabIndex} onChange={handleTabChange} variant="fullWidth" sx={{ mb: 3 }}>
+      <Tabs value={tabIndex} onChange={handleTabChange} variant="fullWidth" sx={{ mb: 3 }}>
         <Tab label="Accedi" sx={{ fontWeight: "bold" }} />
         <Tab label="Registrati" sx={{ fontWeight: "bold" }} />
       </Tabs>
@@ -134,7 +134,7 @@ export default function SignupForm({ onLoginSuccess }) {
               ),
             }}
           />
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 1, borderRadius: 5 }}>
+          <Button type="submit" variant="contained" color="secondary" fullWidth sx={{ mt: 1, borderRadius: 5 }}>
             Crea Account
           </Button>
         </form>
