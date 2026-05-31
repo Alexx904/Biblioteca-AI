@@ -75,7 +75,7 @@ function Catalogo() {
         </Paper>
 
         {/* FILTRI CATEGORIE */}
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mb: 5 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap:1, mb: 5, }}>
           {categorie.map(cat => (
             <Button
               key={cat.label}
@@ -86,18 +86,15 @@ function Catalogo() {
                 borderRadius: 10,
                 textTransform: 'none',
                 fontWeight: 600,
-                fontSize: '0.9rem',
+                fontSize: '1rem',
                 px: 2,
-                backgroundColor: categoriaAttiva === cat.label ? '#1a2e46' : 'white',
-                color: categoriaAttiva === cat.label ? 'white' : '#374151',
-                borderColor: '#d1d5db',
+                backgroundColor: categoriaAttiva === cat.label ? 'primary.main' : 'background.card',
                 '&:hover': {
-                  backgroundColor: categoriaAttiva === cat.label ? '#1a2e46' : '#f3f4f6',
-                  borderColor: '#9ca3af',
+                  backgroundColor: categoriaAttiva === cat.label ? 'primary.dark' : 'background.default',                  
                 }
               }}
             >
-              {cat.emoji} {cat.label}
+              {cat.label}
             </Button>
           ))}
         </Box>
