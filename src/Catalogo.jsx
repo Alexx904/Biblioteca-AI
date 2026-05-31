@@ -3,6 +3,7 @@ import { Box, Container, Typography, Paper, InputBase,
          Card, CardContent, Chip } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import React from 'react';
+import SectionTitle from './SectionTitle';
 
 const categorie = [
   { label: 'Tutti', emoji: '🗂️' },
@@ -42,21 +43,10 @@ function Catalogo() {
   });
 
   return (
-    <Box component="section" id="catalogo" sx={{py: 8, minHeight: '100vh' }}>
+    <Box component="section" id="catalogo" sx={{py: 8}}>
       <Container maxWidth="lg">
-
         {/* TITOLO */}
-        <Box sx={{ textAlign: 'center', mb: 6 }}>
-          <Typography variant="h2" sx={{ fontWeight: 800, color: '#1a2e46', fontFamily: 'serif', mb: 1 }}>
-            Catalogo Libri
-          </Typography>
-          {/* Linea oro sotto il titolo */}
-          <Box sx={{ width: 60, height: 3, backgroundColor: '#d4b86a', mx: 'auto', mb: 2 }} />
-          <Typography variant="body1" sx={{ color: '#6b7280', fontStyle: 'italic', fontSize: '1.1rem' }}>
-            Sfoglia l'intera collezione
-          </Typography>
-        </Box>
-
+        <SectionTitle title="Catalogo Libri" subtitle="Sfoglia l'intera collezione" />       
         {/* BARRA DI RICERCA */}
         <Paper elevation={1} sx={{ display: 'flex', alignItems: 'center', px: 3, py: 1.5, borderRadius: 4, mb: 4, gap: 2 }}>
           <SearchIcon sx={{ color: '#6b7280' }} />
