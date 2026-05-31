@@ -1,8 +1,7 @@
 import { useState } from "react"; //strumeto per far ricordare react
 import Hamburger from "./Hamburger";
 import NavLink from "./NavLink"
-import { Dialog, Stack, Box, Typography, Avatar , Menu, MenuItem} from "@mui/material";
-import {Button} from "@mui/material";
+import { Dialog, Stack, Box, Typography, Avatar , Menu, MenuItem, Button} from "@mui/material";
 import SignupForm from "./SignupForm";
 import * as React from "react";
 import { MenuBook } from "@mui/icons-material";
@@ -68,19 +67,17 @@ function NavBar(){
                     sx={{ 
                         display: 'flex', 
                         alignItems: 'center', 
-                        gap: 1.5, 
-                        backgroundColor: '#f0f0f0', 
+                        gap: 1.5,                         
                         padding: '5px 15px', 
                         borderRadius: 5, 
                         cursor: 'pointer',
-                        transition: '0.3s', 
-                        '&:hover': { backgroundColor: '#e0e0e0' }
+                        transition: '0.3s',                         
                     }}
                 >
                     <Avatar sx={{ width: 30, height: 30, bgcolor: 'primary.main' }}>
                         {utenteLoggato.nome.charAt(0).toUpperCase()}
                     </Avatar>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1f375e' }}>
+                    <Typography color="primary" variant="body1" sx={{ fontWeight: 'bold' }}>
                         {utenteLoggato.nome}
                     </Typography>
                 </Box>
