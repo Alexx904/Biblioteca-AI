@@ -58,8 +58,8 @@ function Catalogo() {
         </Box>
 
         {/* BARRA DI RICERCA */}
-        <Paper elevation={1} sx={{ display: 'flex', alignItems: 'center', px: 3, py: 1.5, borderRadius: 4, mb: 4, gap: 2 }}>
-          <SearchIcon sx={{ color: '#6b7280' }} />
+        <Paper elevation={1} sx={{ display: 'flex', alignItems: 'center', px: 3, py:1, borderRadius: 4, mb: 4, gap: 2 }}>
+          <SearchIcon color='primary' />
           <InputBase
             fullWidth
             placeholder="Cerca titolo o autore..."
@@ -72,12 +72,13 @@ function Catalogo() {
               <Checkbox
                 checked={soloDisponibili}
                 onChange={e => setSoloDisponibili(e.target.checked)}
-                sx={{ color: '#1a2e46', '&.Mui-checked': { color: '#1a2e46' } }}
+                color='primary'                
               />
             }
             label="Solo disponibili"
-            sx={{ whiteSpace: 'nowrap', color: '#374151', mr: 0 }}
+            sx={{ whiteSpace: 'nowrap', color: 'text.secondary', mr: 0 }}
           />
+          
         </Paper>
 
         {/* FILTRI CATEGORIE */}
