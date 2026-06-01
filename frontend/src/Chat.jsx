@@ -24,11 +24,11 @@ function Chat() {
           }}
         >
           {/* Testo e Icona a sinistra */}
-          <Stack direction="row" spacing={3} alignItems="center">
+          <Stack direction="row" spacing={3} sx={{alignItems:"center"}}>
             <Box sx={{ p: 2, bgcolor: 'rgba(255,255,255,0.1)', borderRadius: '50%', display: 'flex' }}>
               <SupportAgentIcon sx={{ fontSize: 50, color: '#DCA743' }} />
             </Box>
-            <Box textAlign={{ xs: 'center', md: 'left' }}>
+            <Box sx={{ textAlign:{ xs: 'center', md: 'left' }}}>
               <Typography variant="h4" sx={{ fontWeight: 'bold', fontFamily: 'serif', mb: 1 }}>
                 Hai bisogno di aiuto?
               </Typography>

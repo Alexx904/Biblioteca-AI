@@ -17,7 +17,7 @@ function Footer() {
                 }}>
                     
                     {/* LOGO */}
-                    <Stack direction="row" alignItems="center" spacing={1}>
+                    <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                         <AutoStoriesIcon sx={{ color: '#38BDF8', fontSize: 30 }} />
                         <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#DCA743', fontFamily: 'serif' }}>
                             BiblioUnisa

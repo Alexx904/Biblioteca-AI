@@ -27,10 +27,10 @@ function Informazioni() {
                 <SectionTitle title="Dove Trovarci" subtitle="Scopri tutti i nostri contatti" />
 
                 {/* Griglia delle carte */}
-                <Grid container spacing={4} justifyContent="center">
+                <Grid container spacing={4} sx={{ justifyContent: 'center' }}>
 
                     {/* Carta 1: Indirizzo */}
-                    <Grid item xs={15} sm={6} md={3}>
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                         <Paper sx={cardStyle} elevation={0}>
                             <LocationOnIcon sx={{ fontSize: 40, color: '#e91e63', mb: 2 }} />
                             <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2e46', mb: 2 }}>Indirizzo</Typography>
@@ -41,7 +41,7 @@ function Informazioni() {
                     </Grid>
 
                     {/* Carta 2: Orari */}
-                    <Grid item xs={15} sm={6} md={3}>
+                    <Grid size={{xs:12, sm:6, md:3}}>
                         <Paper sx={cardStyle} elevation={0}>
                             <AccessTimeIcon sx={{ fontSize: 40, color: '#64748b', mb: 2 }} />
                             <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2e46', mb: 2 }}>Orari</Typography>
@@ -52,7 +52,7 @@ function Informazioni() {
                     </Grid>
 
                     {/* Carta 3: Telefono */}
-                    <Grid item xs={15} sm={6} md={3}>
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                         <Paper sx={cardStyle} elevation={0}>
                             <PhoneIcon sx={{ fontSize: 40, color: '#e91e63', mb: 2 }} />
                             <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2e46', mb: 2 }}>Telefono</Typography>
@@ -63,7 +63,7 @@ function Informazioni() {
                     </Grid>
 
                     {/* Carta 4: Servizi (Messa al centro in basso o a sinistra, come nell'immagine) */}
-                    <Grid item xs={15} sm={6} md={3}>
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                         <Paper sx={cardStyle} elevation={0}>
                             <LanguageIcon sx={{ fontSize: 40, color: '#38BDF8', mb: 2 }} />
                             <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2e46', mb: 2 }}>Servizi</Typography>

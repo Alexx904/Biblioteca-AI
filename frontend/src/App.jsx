@@ -5,10 +5,11 @@ import Postazioni from "./Postazioni";
 import Chat from "./Chat";
 import Informazioni from "./Informazioni";
 import Footer from "./Footer";
-import WidgetChat from "./WidgetChat";
 import {ThemeProvider} from "@mui/material/styles";
 import {lightTheme, darkTheme} from "./Theme";
 import { CssBaseline } from "@mui/material";
+import WidgetChat from "./WidgetChat";
+
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
         <Chat/>
         <Informazioni/>
         <Footer/>
-        <WidgetChat />
+        <WidgetChat/>
       </ThemeProvider>
     </>
   );

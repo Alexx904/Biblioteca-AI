@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { 
-  Box, Container, Typography, TextField, 
-  Paper, Stack, ToggleButton, ToggleButtonGroup, Chip
+import {
+    Box, Container, Typography, TextField,
+    Paper, Stack, ToggleButton, ToggleButtonGroup, Chip
 } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";;
 import MappaPostazioni from "./MappaPostazioni";
@@ -11,6 +11,9 @@ import SectionTitle from "./SectionTitle";
 function Postazioni() {
     const [aula, setAula] = useState("aulaA");
     const [postoPrenotato, setPostoPrenotato] = useState(null);
+
+    const [dataFiltro, setDataFiltro] = useState('');
+    const [oraFiltro, setOraFiltro] = useState('');
 
     const handleAulaChange = (event, nuovaAula) => {
         if (nuovaAula !== null) {
@@ -24,7 +27,7 @@ function Postazioni() {
         <Box component="section" id="postazioni" sx={{ py: 8, bgcolor: '#f8fafc', minHeight: '100vh' }}>
             <Container maxWidth="lg">
 
-                <SectionTitle title="Postazioni di Studio" subtitle="Seleziona aula, data e orario — poi clicca sulla postazione"/>
+                <SectionTitle title="Postazioni di Studio" subtitle="Seleziona aula, data e orario — poi clicca sulla postazione" />
 
                 {/* BARRA FILTRI */}
                 <Paper elevation={0} sx={{
@@ -44,10 +47,11 @@ function Postazioni() {
                         </Typography>
                         <TextField
                             fullWidth
-                            id="date__postazione"
                             type="date"
                             size="small"
-                            InputLabelProps={{ shrink: true }}
+                            slotProps={{ shrink: true }}
+                            value={dataFiltro}
+                            onChange={e => setDataFiltro(e.target.value)}
                             sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
                         />
                     </Box>
@@ -58,11 +62,12 @@ function Postazioni() {
                         </Typography>
                         <TextField
                             fullWidth
-                            id="ora__postazione"
                             type="time"
                             size="small"
-                            inputProps={{ min: "08:00", max: "21:30" }}
-                            InputLabelProps={{ shrink: true }}
+                            slotProps={{ htmlInput: { min: "08:00", max: "21:30" }, slotLabel: { shrink: true } }}
+                            slotProps={{ shrink: true }}
+                            value={oraFiltro}
+                            onChange={e => setOraFiltro(e.target.value)}
                             sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
                         />
                     </Box>
@@ -101,16 +106,6 @@ function Postazioni() {
 
                 {/* PILLOLE RIASSUNTIVE STATO POSTI */}
                 <Stack direction="row" spacing={2} sx={{ mb: 4, flexWrap: 'wrap', useFlexGap: true }}>
-                    <Chip
-                        icon={<CircleIcon sx={{ fontSize: '12px !important', color: '#10b981' }} />}
-                        label="Libere"
-                        sx={{ bgcolor: 'white', border: '1px solid #e5e7eb', fontWeight: 'bold', px: 1, borderRadius: 2 }}
-                    />
-                    <Chip
-                        icon={<CircleIcon sx={{ fontSize: '12px !important', color: '#ef4444' }} />}
-                        label="Occupate"
-                        sx={{ bgcolor: 'white', border: '1px solid #e5e7eb', fontWeight: 'bold', px: 1, borderRadius: 2 }}
-                    />
                     {postoPrenotato && (
                         <Chip
                             icon={<CircleIcon sx={{ fontSize: '12px !important', color: '#3b82f6' }} />}
@@ -125,6 +120,8 @@ function Postazioni() {
                     aulaSelezionata={aula}
                     postoSelezionato={postoPrenotato}
                     onPostazioneSelezionata={setPostoPrenotato}
+                    dataFiltro={dataFiltro}
+                    oraFiltro={oraFiltro}
                 />
 
             </Container>
