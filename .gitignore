@@ -1,0 +1,81 @@
+# ==========================================
+# DIPENDENZE (Node.js)
+# ==========================================
+node_modules/
+jspm_packages/
+.npm/
+
+# ==========================================
+# FILE DI LOG
+# ==========================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==========================================
+# BUILD & PRODUZIONE (Vite / React)
+# ==========================================
+dist/
+dist-ssr/
+build/
+out/
+
+# Cache generata da Vite / strumenti di build
+.vite/
+.eslintcache
+.stylelintcache
+
+# ==========================================
+# VARIABILI D'AMBIENTE E SEGRETI (Critico!)
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ==========================================
+# TESTING E COVERAGE
+# ==========================================
+coverage/
+.nyc_output/
+
+# ==========================================
+# FILE DI SISTEMA (OS)
+# ==========================================
+# Mac
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ==========================================
+# EDITOR E IDE
+# ==========================================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.vim
+.history/
+
+# ==========================================
+# CARTELLE TEMPORANEE O DI BACKUP
+# ==========================================
+OLD/
+tmp/
+temp/
