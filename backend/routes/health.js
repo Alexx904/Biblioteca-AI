@@ -2,7 +2,7 @@
 import express from 'express'
 
 // Importa HealthController del server
-import HealthController from '../controllers/healthController'
+import HealthController from '../controllers/healthController.js'
 
 // Crea un nuovo router Express per definire le rotte
 const router = express.Router()
