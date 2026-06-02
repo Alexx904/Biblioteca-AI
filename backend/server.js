@@ -10,9 +10,11 @@ import { Server } from "socket.io";
 //caricamento delle variabili d'ambiente
 dotenv.config();
 
+//import dei router
 import auth from "./routes/auth.js";
 import book from "./routes/book.js";
 import postazioni from "./routes/postazioni.js";
+import health from "./routes/health.js";
 
 
 const app = express(); //inizializzazione app
@@ -25,10 +27,11 @@ mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("Connesso a MongoDB"))
     .catch((err) => console.error(" Errore di connessione a MongoDB:", err));
 
-
+//ROUTES
 app.use("/api/auth", auth);            
 app.use("/api/libri", book);           
 app.use("/api/postazioni", postazioni);
+app.use("/api/health", health);
 
 const httpServer = http.createServer(app);
 
