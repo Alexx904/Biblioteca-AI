@@ -146,7 +146,7 @@ return (
 
 
       {/* BARRA DI RICERCA */}
-      <Paper elevation={1} sx={{ display: 'flex', alignItems: 'center', px: 3, py: 1, borderRadius: 4, mb: 4, gap: 2 }}>
+      <Paper elevation={2} sx={{ display: 'flex', alignItems: 'center', px: 3, py: 1, borderRadius: 4, mb: 4, gap: 2 }}>
         <SearchIcon color='primary' />
         <InputBase
           fullWidth
@@ -200,7 +200,7 @@ return (
           const giaPrenotato = libriPrenotatiIds.includes(libro._id.toString());
           return (
             <Grid key={libro._id} size={{ xs: 12, sm: 6, md: 4 }}>
-              <Card sx={{ /* ... I tuoi stili Card ... */ borderTop: '4px solid #16a34a', height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <Card elevation={2} sx={{borderTop: '4px solid #16a34a', height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ flexGrow: 1, pt: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
                     {/* ... Icona, Titolo, Autore, Descrizione ... */}
