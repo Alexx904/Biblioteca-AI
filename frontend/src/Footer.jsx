@@ -20,14 +20,14 @@ function Footer() {
                     <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                         <AutoStoriesIcon sx={{ color: '#38BDF8', fontSize: 30 }} />
                         <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#DCA743', fontFamily: 'serif' }}>
-                            BiblioUnisa
+                            Nova Library
                         </Typography>
                     </Stack>
 
                     {/* TESTO */}
                     <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
                         <Typography variant="body2" sx={{ color: '#cbd5e1', mb: 0.5 }}>
-                            © 2026 Università degli Studi di Salerno — Sistema Bibliotecario
+                            © 2026 Nova Library — Sistema Bibliotecario Digitale
                         </Typography>
                         <Typography variant="caption" sx={{ color: '#64748b' }}>
                             Progetto universitario — Fondamenti del Web A.A. 2025/2026

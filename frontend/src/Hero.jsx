@@ -27,12 +27,12 @@ function Hero(){
                 }} 
                 /> */}
             
-                <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold', fontFamily: 'serif' }}>
-               Biblioteca 
-                <Typography variant="h2" component="h1" sx={{fontWeight: 'bold', fontFamily: 'serif', color:'secondary.main' }}>
-                Universitaria
+                <Typography variant="h2" component="h1" gutterBottom sx={{fontWeight: 'bold', fontFamily: 'serif', color:'secondary.main' }}>
+               Nova 
+                <Typography variant="h2" component="h1" sx={{ fontWeight: 'bold', fontFamily: 'serif', color:'text.primary' }}>
+                Library
                 </Typography>
-                Digitale
+                
                 </Typography>
             
                 <Typography variant="subtitle1" gutterBottom sx={{color:"text.secondary", fontSize: '1.25rem' }}> 

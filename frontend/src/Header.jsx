@@ -14,7 +14,7 @@ function Header(){
                     <Stack direction="row" spacing={2} sx={{alignItems: 'center'}}>
                         <Avatar src="img/logo.png" alt="logo" sx={{height:50, width:50}}  />
                         <Typography variant="h5" sx={{color:'navbar.contrastText',fontFamily: 'serif', fontWeight: 'bold', display: { xs:'none', md: 'block' } }}>
-                            Biblioteca
+                            Nova Library
                         </Typography>
                     </Stack>
                 </Box>

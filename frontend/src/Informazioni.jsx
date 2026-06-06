@@ -35,7 +35,7 @@ function Informazioni() {
                             <LocationOnIcon sx={{ fontSize: 40, color: '#e91e63', mb: 2 }} />
                             <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2e46', mb: 2 }}>Indirizzo</Typography>
                             <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8 }}>
-                                Via Giovanni Paolo II, 132<br />Fisciano (SA) 84084
+                                Viale della Conoscenza, 7<br />Bari (BA) 70125
                             </Typography>
                         </Paper>
                     </Grid>
@@ -46,7 +46,7 @@ function Informazioni() {
                             <AccessTimeIcon sx={{ fontSize: 40, color: '#64748b', mb: 2 }} />
                             <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2e46', mb: 2 }}>Orari</Typography>
                             <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8 }}>
-                                Lun–Ven: 8:00–22:00<br />Sab: 9:00–19:00<br />Dom: chiuso
+                                Lun–Sab: 8:00–20:00<br />Dom: chiuso
                             </Typography>
                         </Paper>
                     </Grid>
@@ -57,18 +57,18 @@ function Informazioni() {
                             <PhoneIcon sx={{ fontSize: 40, color: '#e91e63', mb: 2 }} />
                             <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2e46', mb: 2 }}>Telefono</Typography>
                             <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8 }}>
-                                +39 089 96 2111<br />biblioteca@unisa.it
+                                +39 080 996 21<br />info@novalibrary.it
                             </Typography>
                         </Paper>
                     </Grid>
 
-                    {/* Carta 4: Servizi (Messa al centro in basso o a sinistra, come nell'immagine) */}
+                    {/* Carta 4: Servizi */}
                     <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                         <Paper sx={cardStyle} elevation={0}>
                             <LanguageIcon sx={{ fontSize: 40, color: '#38BDF8', mb: 2 }} />
                             <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2e46', mb: 2 }}>Servizi</Typography>
                             <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8 }}>
-                                36 postazioni studio<br />12.000+ volumi<br />Wi-Fi gratuito
+                                30 postazioni studio<br />12.000+ volumi<br />Wi-Fi gratuito
                             </Typography>
                         </Paper>
                     </Grid>
