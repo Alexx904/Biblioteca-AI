@@ -5,9 +5,8 @@ export const lightTheme = createTheme({
         mode: 'light',
         primary: {
             main: '#1A365D',
-            dark: '#111E2E',           
-            contrastText: '#ffffff',
-            
+            dark: '#142A4D',           
+            contrastText: '#ffffff',            
         },
         secondary: {
             main: '#0284C7',
@@ -16,11 +15,16 @@ export const lightTheme = createTheme({
         },
         background: {
             default: '#F8FAFC',
-            card: '#FFFFFF',
+            paper: '#FFFFFF',
         },
         text: {
             primary: '#0F172A',
             secondary: '#475569',
+        },
+        navbar: {
+            main: '#1A365D',
+            dark: '#142A4D',           
+            contrastText: '#ffffff',            
         },
     },
 });
@@ -29,24 +33,27 @@ export const darkTheme = createTheme({
     palette: {
         mode: 'dark',
         primary: {
-            main: '#3b5e8c',
-            dark: '#111E2E',
-            light: '#3B5472',
-            contrastText: '#fff',
+            main: '#38BDF8',
+            dark: '#309ecd',
+            contrastText: '#0F172A',
         },
         secondary: {
-            main: '#DCA743',
-            dark: '#C59432',
-            light: '#E6BD6B',
-            contrastText: '#1a2e46',
+            main: '#38BDF8',
+            light: '#0F172A',
+            contrastText: '#0F172A',
         },
         background: {
-            default: '#0f172a',
-            paper: '#1e293b',
+            default: '#0F172A',
+            paper: '#0A1E3F',
         },
         text: {
-            primary: '#f8fafc',
-            secondary: '#94a3b8',
+            primary: '#F8FAFC',
+            secondary: '#a8afb8',
+        },
+        navbar: {
+            main: '#0A1E3F',
+            dark: '#081935',           
+            contrastText: '#F8FAFC',            
         },
     },
 });
