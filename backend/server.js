@@ -15,7 +15,7 @@ import auth from "./routes/auth.js";
 import book from "./routes/book.js";
 import postazioni from "./routes/postazioni.js";
 import health from "./routes/health.js";
-
+import chat from "./routes/chat.js"
 
 const app = express(); //inizializzazione app
 
@@ -32,6 +32,7 @@ app.use("/api/auth", auth);
 app.use("/api/libri", book);           
 app.use("/api/postazioni", postazioni);
 app.use("/api/health", health);
+app.use("/api/chat", chat);
 
 const httpServer = http.createServer(app);
 

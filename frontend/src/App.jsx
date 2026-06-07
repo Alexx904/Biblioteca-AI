@@ -13,7 +13,7 @@ import WidgetChat from "./WidgetChat";
 
 
 function App() {
-  const currentTheme =darkTheme;
+  const currentTheme =lightTheme; 
   return(
     <>
       <ThemeProvider theme={currentTheme}>
