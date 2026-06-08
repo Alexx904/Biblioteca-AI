@@ -12,8 +12,8 @@ function Header(){
                 <Box component="a" href="index.html">
                     {/* Primo Stack per il logo e il titolo. */}
                     <Stack direction="row" spacing={2} sx={{alignItems: 'center'}}>
-                        <Avatar src="img/logo.png" alt="logo" sx={{height:50, width:50}}  />
-                        <Typography variant="h5" sx={{color:'navbar.contrastText',fontFamily: 'serif', fontWeight: 'bold', display: { xs:'none', md: 'block' } }}>
+                        <Avatar variant="square" src="img/logo.png" alt="logo" sx={{height:60, width:60}}  />
+                        <Typography variant="h4" sx={{color:'navbar.contrastText',fontFamily: 'serif', fontWeight: 'bold', display: { xs:'none', md: 'block' } }}>
                             Nova Library
                         </Typography>
                     </Stack>

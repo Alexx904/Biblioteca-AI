@@ -35,7 +35,7 @@ function NavBar() {
         setOpen(false); // Chiude il popup
     };
 
-    const [elenco, setElenco] = useState(null);
+    const [elenco, setElenco] = useState(null);    
 
     const menuAperto = Boolean(elenco);
 
