@@ -72,7 +72,7 @@ function Hero(){
               </Box>              
             </Box>
             {/* Sezione Info: Volumi, Postazioni, Orari */}
-            <Stack direction={'row'} spacing={2} useFlexGap sx={{flexWrap:'wrap'}}> {/*flexWrap serve per mandare a capo gli elementi dello stack se non c'è spazio */}
+            <Stack direction='row' spacing={2} useFlexGap sx={{justifyContent:'center', flexWrap:'wrap'}}> {/*flexWrap serve per mandare a capo gli elementi dello stack se non c'è spazio */}
               <HeroCard title='Volumi in catalago' value='12000'/>
               <HeroCard title='Postazioni studio' value='30'/>
               <HeroCard title='Orario di apertura' value='8:00-20:00'/>
