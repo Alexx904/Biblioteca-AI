@@ -24,17 +24,18 @@ function Postazioni() {
 
     return (
         //creazione Box con tag section
-        <Box component="section" id="postazioni" sx={{ py: 8, bgcolor: '#f8fafc', minHeight: '100vh' }}>
+        <Box component="section" id="postazioni" sx={{ py: 8, minHeight: '100vh' }}>
             <Container maxWidth="lg">
 
                 <SectionTitle title="Postazioni di Studio" subtitle="Seleziona aula, data e orario — poi clicca sulla postazione" />
 
                 {/* BARRA FILTRI */}
-                <Paper elevation={0} sx={{
+                <Paper elevation={2} sx={{
                     p: 3,
                     borderRadius: 4,
                     mb: 4,
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid',
+                    borderColor:'bookcard.border',
                     display: 'flex',
                     flexWrap: 'wrap',
                     gap: 3,
@@ -42,7 +43,7 @@ function Postazioni() {
                 }}>
 
                     <Box sx={{ flex: 1, minWidth: 150 }}>
-                        <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#6b7280', display: 'block', mb: 1 }}>
+                        <Typography variant="caption" sx={{ fontWeight: 'bold', display: 'block', mb: 1 }}>
                             DATA
                         </Typography>
                         <TextField
@@ -57,7 +58,7 @@ function Postazioni() {
                     </Box>
 
                     <Box sx={{ flex: 1, minWidth: 150 }}>
-                        <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#6b7280', display: 'block', mb: 1 }}>
+                        <Typography variant="caption" sx={{ fontWeight: 'bold', display: 'block', mb: 1 }}>
                             ORA INIZIO
                         </Typography>
                         <TextField
@@ -73,7 +74,7 @@ function Postazioni() {
                     </Box>
 
                     <Box sx={{ flex: 2, minWidth: 200 }}>
-                        <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#6b7280', display: 'block', mb: 1 }}>
+                        <Typography variant="caption" sx={{ fontWeight: 'bold', display: 'block', mb: 1 }}>
                             AULA
                         </Typography>
                         <ToggleButtonGroup
@@ -88,12 +89,12 @@ function Postazioni() {
                                     px: 3,
                                     textTransform: 'none',
                                     fontWeight: 'bold',
-                                    borderColor: '#e5e7eb',
+                                    borderColor: 'bookcard.border',
                                     mx: 0.5,
                                     '&.Mui-selected': {
-                                        bgcolor: '#1a2e46',
-                                        color: 'white',
-                                        '&:hover': { bgcolor: '#2a4a6b' }
+                                        bgcolor: 'primary.main',
+                                        color: 'primary.contrastText',
+                                        '&:hover': { bgcolor: 'primary.dark' }
                                     }
                                 },
                             }}

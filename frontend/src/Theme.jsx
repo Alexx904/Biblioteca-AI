@@ -39,7 +39,9 @@ export const lightTheme = createTheme({
             main:'#10b981'
         },
          error:{
-            main:'#f59e0b'
+            main:'#ef4444',
+            dark:'#991b1b',
+            light:'#fca5a5'
         },
     },
 });
@@ -84,7 +86,9 @@ export const darkTheme = createTheme({
             main:'#10b981'
         },
          error:{
-            main:'#f59e0b'
+            main:'#ef4444',
+            dark:'#991b1b',
+            light:'#fca5a5'
         },
     },
 });

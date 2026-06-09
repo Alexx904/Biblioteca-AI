@@ -146,7 +146,7 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
   };
 
   const getBgColor = (postazione) => {
-    if (postazione.stato === 'occupata') return '#fca5a5';
+    if (postazione.stato === 'occupata') return 'error.light';
     if (postoDaPrenotare?.id_posto === postazione.id_posto) return '#bfdbfe';
     return '#bbf7d0';
   };
@@ -176,7 +176,7 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
           transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
           width: 48, height: 48, // Un po' più proporzionate
           border: '2px solid',
-          borderColor: postazione.stato === 'occupata' ? '#ef4444' : (postoDaPrenotare?.id_posto === postazione.id_posto ? '#3b82f6' : '#22c55e'),
+          borderColor: postazione.stato === 'occupata' ? 'error.main' : (postoDaPrenotare?.id_posto === postazione.id_posto ? '#3b82f6' : '#22c55e'),
           zIndex: 1, // Le sedie stanno "sotto" al livello del tavolo
           '&:hover': {
             transform: 'scale(1.1)',
@@ -186,13 +186,13 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
         }}
       >
         <EventSeatIcon sx={{
-          color: postazione.stato === 'occupata' ? '#991b1b' : '#166534',
+          color: postazione.stato === 'occupata' ? 'error.dark' : '#166534',
           fontSize: 20,
           transform: isTopRow ? 'none' : 'rotate(180deg)',
           mb: 0.5
         }} />
         {/* Il testo ora è sempre dritto senza bisogno di calcoli extra */}
-        <Typography variant="caption" fontWeight="bold" sx={{ fontSize: '0.7rem', lineHeight: 1 }}>
+        <Typography variant="caption" fontWeight="bold" sx={{color: postazione.stato === 'occupata' ? 'error.dark' : '#166534', fontSize: '0.7rem', lineHeight: 1 }}>
           {postazione.id_posto}
         </Typography>
       </Paper>
@@ -201,11 +201,11 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
 
 
   return (
-    <Box sx={{ width: '100%', mt: 2, p: 2, bgcolor: '#f5f5f5', borderRadius: 2, border: '1px solid #e0e0e0' }}>
-      <Typography variant="h6" align="center" gutterBottom color="text.secondary">
+    <Box sx={{bgcolor:'background.paper', width: '100%', mt: 2, p: 2, borderRadius: 2, border: '1px solid', borderColor:'bookcard.border' }}>
+      <Typography variant="h6" align="center" gutterBottom>
         Mappa: {aulaSelezionata === 'aulaA' ? 'Aula A' : 'Aula B'}
         {dataFiltro && oraFiltro && (
-          <Typography component="span" variant="body2" color="text.secondary" sx={{ ml: 2 }}>
+          <Typography component="span" variant="body2" sx={{color:'text.secondary', ml: 2 }}>
             — Disponibilità per {dataFiltro} alle {oraFiltro}
           </Typography>
         )}
@@ -226,13 +226,13 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
         </Box>
       </Box>
 
-      {/* Lavagna per orientamento */}
+      {/* Lavagna per orientamento
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', mb: 5 }}>
         <Box sx={{ width: '50%', maxWidth: 400, height: 12, bgcolor: '#cbd5e1', borderRadius: 2, mb: 1, boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)' }} />
         <Typography variant="caption" color="text.secondary" fontWeight="bold" letterSpacing={2}>
           CATTEDRA / LAVAGNA
         </Typography>
-      </Box>
+      </Box> */}
 
       {/* MAPPA FISICA DEI TAVOLI */}
       <Box sx={{ 
@@ -253,17 +253,17 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
             {/* Grafica del Tavolo Centrale */}
             <Paper elevation={3} sx={{ 
                 width: 140, 
-                height: 70, 
-                bgcolor: '#f8fafc', // Colore chiaro scrivania
-                backgroundImage: 'linear-gradient(to bottom right, #ffffff, #e2e8f0)', // Leggero effetto 3D
+                height: 70,                 
+                backgroundImage: 'linear-gradient(to bottom right, #b2dff3, #0284C7)', // Leggero effetto 3D
                 borderRadius: 2, 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
-                border: '1px solid #cbd5e1',
+                border: '1px solid',
+                borderColor:'navbar.main',
                 zIndex: 0.75// Il tavolo copre leggermente i bordi delle sedie (effetto realistico)
             }}>
-              <Typography variant="caption" color="text.secondary" fontWeight="bold" sx={{ letterSpacing: 1, opacity: 0.6 }}>
+              <Typography variant="caption" fontWeight="bold" sx={{color:'black', letterSpacing: 1}}>
                 TAVOLO {indexTavolo + 1}
               </Typography>
             </Paper>
