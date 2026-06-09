@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Fab, Paper, Typography, TextField, Box, IconButton } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
@@ -10,18 +10,6 @@ const WidgetChat = () => {
   const [messaggi, setMessaggi] = useState([
     { mittente: 'ai', testo: "Ciao! Sono l'AI. Come posso aiutarti?" }
   ]);
-
-  //ascolto evento click pulsante di chat.jsx
-  useEffect(() => {
-    const gestisciAperturaEsterna = () => setIsOpen(true);
-
-    window.addEventListener("apriChat", gestisciAperturaEsterna);
-    
-    // Pulizia del listener quando il componente si smonta
-    return () => {
-      window.removeEventListener("apriChat", gestisciAperturaEsterna);
-    };
-  }, []);
 
   // 1. Aggiungiamo 'async' per dire a React che questa funzione contiene operazioni di rete che richiederanno tempo
   const gestisciInvio = async () => {
@@ -38,7 +26,7 @@ const WidgetChat = () => {
       setInputTesto('');
 
       try {
-        // --- (Fetch API) ---
+        // --- LA MAGIA DELLA RETE (Fetch API) ---
         // 'await' mette in pausa l'esecuzione di QUESTA funzione finché il server Node.js non risponde,
         // ma non blocca l'interfaccia utente (puoi ancora scorrere la pagina o cliccare la X).
         const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/chat`, {

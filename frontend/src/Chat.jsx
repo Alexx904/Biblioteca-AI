@@ -6,13 +6,13 @@ function Chat() {
   return (
     <Box component="section" id="chat" sx={{ py: 6, bgcolor: '#ffffff' }}>
       <Container maxWidth="lg">
-
+        
         {/* Banner con sfondo scuro */}
-        <Paper
-          elevation={0}
-          sx={{
-            p: { xs: 4, md: 5 },
-            borderRadius: 4,
+        <Paper 
+          elevation={0} 
+          sx={{ 
+            p: { xs: 4, md: 5 }, 
+            borderRadius: 4, 
             bgcolor: '#1a2e46', // Sfondo blu scuro per far risaltare la sezione
             color: 'white',
             display: 'flex',
@@ -24,11 +24,11 @@ function Chat() {
           }}
         >
           {/* Testo e Icona a sinistra */}
-          <Stack direction="row" spacing={3} sx={{ alignItems: "center" }}>
+          <Stack direction="row" spacing={3} sx={{alignItems:"center"}}>
             <Box sx={{ p: 2, bgcolor: 'rgba(255,255,255,0.1)', borderRadius: '50%', display: 'flex' }}>
               <SupportAgentIcon sx={{ fontSize: 50, color: '#DCA743' }} />
             </Box>
-            <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+            <Box sx={{ textAlign:{ xs: 'center', md: 'left' }}}>
               <Typography variant="h4" sx={{ fontWeight: 'bold', fontFamily: 'serif', mb: 1 }}>
                 Hai bisogno di aiuto?
               </Typography>
@@ -37,14 +37,13 @@ function Chat() {
               </Typography>
             </Box>
           </Stack>
-
+          
           {/* Bottone a destra */}
-          <Button
-            variant="contained"
+          <Button 
+            variant="contained" 
             size="large"
-            onClick={() => window.dispatchEvent(new Event("apriChat"))} // <-- AGGIUNGI QUESTO
-            sx={{
-              bgcolor: '#DCA743',
+            sx={{ 
+              bgcolor: '#DCA743', 
               color: '#1a2e46',
               fontWeight: 'bold',
               borderRadius: 8,
@@ -52,12 +51,10 @@ function Chat() {
               py: 1.5,
               whiteSpace: 'nowrap',
               boxShadow: 'none',
-              '&:hover': {
-                bgcolor: '#cfa03c' // Sostituisci i tuoi tre puntini con un colore hover reale
-              }
+              '&:hover': { bgcolor: '#c59432', boxShadow: '0 4px 12px rgba(220, 167, 67, 0.4)' }
             }}
           >
-            Inizia la chat
+            Inizia la Chat
           </Button>
         </Paper>
 
