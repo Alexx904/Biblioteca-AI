@@ -26,7 +26,7 @@ function Chat() {
           {/* Testo e Icona a sinistra */}
           <Stack direction="row" spacing={3} sx={{ alignItems: "center" }}>
             <Box sx={{ p: 2, bgcolor: 'primary.dark', borderRadius: '50%', display: 'flex' }}>
-              <SupportAgentIcon sx={{ fontSize: 50, color: 'secondary.light' }} />
+              <SupportAgentIcon sx={{ fontSize: 50, color: 'secondary.accent' }} />
             </Box>
             <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
               <Typography variant="h4" sx={{ fontWeight: 'bold', fontFamily: 'serif', mb: 1 }}>
@@ -44,7 +44,7 @@ function Chat() {
             size="large"
             onClick={() => window.dispatchEvent(new Event("apriChat"))}
             sx={{
-              bgcolor: 'secondary.light',
+              bgcolor: 'secondary.accent',
               color: 'primary.main',
               fontWeight: 'bold',
               borderRadius: 8,
@@ -53,7 +53,7 @@ function Chat() {
               whiteSpace: 'nowrap',
               boxShadow: 'none',
               '&:hover': {
-                bgcolor: 'secondary.main'
+                bgcolor: 'secondary.dark'
               }
             }}
           >
