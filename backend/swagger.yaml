@@ -1,0 +1,1065 @@
+openapi: 3.0.3
+info:
+  title: Biblioteca Universitaria API
+  description: |
+    API REST per la gestione della biblioteca universitaria.
+    Permette la **registrazione/autenticazione degli utenti**, la **prenotazione di libri e postazioni studio** e include un **assistente AI** (Gemini) per supporto agli studenti.
+
+    ## Autenticazione
+    L'autenticazione avviene tramite **cookie HTTP-Only** (`accessToken` e `refreshToken`).
+    Dopo il login, i cookie vengono impostati automaticamente e inviati in ogni richiesta successiva.
+
+    ## Ruoli
+    - `studente` — ruolo predefinito, può prenotare libri e postazioni
+    - `admin` — può creare libri e postazioni
+  version: "1.0.0"
+  contact:
+    name: Biblioteca Universitaria
+
+servers:
+  - url: http://localhost:3000/api
+    description: Server di sviluppo locale
+
+tags:
+  - name: Auth
+    description: Registrazione, login, gestione profilo e token
+  - name: Libri
+    description: Catalogo libri, prenotazione e restituzione
+  - name: Postazioni
+    description: Gestione postazioni nelle aule studio
+  - name: Stats
+    description: Statistiche generali della biblioteca
+  - name: Chat
+    description: Assistente AI per gli studenti
+  - name: Health
+    description: Verifica dello stato del server
+
+
+# SECURITY SCHEMES
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: accessToken
+      description: Token JWT HTTP-Only impostato automaticamente dopo il login.
+
+  
+  # SCHEMAS
+  
+  schemas:
+
+    # --- UTENTE ---
+    UtenteRegistrazione:
+      type: object
+      required: [nome, matricola, facolta, email, password]
+      properties:
+        nome:
+          type: string
+          example: "Mario Rossi"
+        matricola:
+          type: string
+          example: "MAT123456"
+        facolta:
+          type: string
+          example: "Ingegneria Informatica"
+        email:
+          type: string
+          format: email
+          example: "mario.rossi@univ.it"
+        password:
+          type: string
+          format: password
+          minLength: 6
+          example: "password123"
+
+    UtenteLogin:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          example: "mario.rossi@univ.it"
+        password:
+          type: string
+          format: password
+          example: "password123"
+
+    UtenteProfilo:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "664a1b2c3d4e5f6a7b8c9d0e"
+        nome:
+          type: string
+          example: "Mario Rossi"
+        matricola:
+          type: string
+          example: "MAT123456"
+        facolta:
+          type: string
+          example: "Ingegneria Informatica"
+        email:
+          type: string
+          format: email
+          example: "mario.rossi@univ.it"
+        ruolo:
+          type: string
+          enum: [studente, admin]
+          example: "studente"
+        libriPrenotati:
+          type: array
+          items:
+            $ref: '#/components/schemas/Libro'
+        postazioniPrenotate:
+          type: array
+          items:
+            $ref: '#/components/schemas/Postazione'
+
+    UtenteAggiornamento:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Mario Rossi"
+        email:
+          type: string
+          format: email
+          example: "mario.rossi@univ.it"
+        matricola:
+          type: string
+          example: "MAT123456"
+        facolta:
+          type: string
+          example: "Ingegneria Informatica"
+
+    AggiornamentoPassword:
+      type: object
+      required: [passwordAttuale, nuovaPassword]
+      properties:
+        passwordAttuale:
+          type: string
+          format: password
+          example: "password123"
+        nuovaPassword:
+          type: string
+          format: password
+          example: "nuovaPassword456"
+
+    # --- LIBRO ---
+    Libro:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "664a1b2c3d4e5f6a7b8c9d1f"
+        titolo:
+          type: string
+          example: "Fondamenti di Informatica"
+        autore:
+          type: string
+          example: "Turing Alan"
+        descrizione:
+          type: string
+          example: "Testo base per il corso di fondamenti."
+        copieTotali:
+          type: integer
+          example: 5
+        copieDisponibili:
+          type: integer
+          example: 3
+        scaffale:
+          type: string
+          example: "A2"
+        categoria:
+          type: string
+          example: "Informatica"
+        colore:
+          type: string
+          example: "#3B82F6"
+        emoji:
+          type: string
+          example: "💻"
+
+    LibroCreazione:
+      type: object
+      required: [titolo, autore, copieTotali, copieDisponibili]
+      properties:
+        titolo:
+          type: string
+          example: "Fondamenti di Informatica"
+        autore:
+          type: string
+          example: "Turing Alan"
+        descrizione:
+          type: string
+          example: "Testo base per il corso di fondamenti."
+        copieTotali:
+          type: integer
+          example: 5
+        copieDisponibili:
+          type: integer
+          example: 5
+        scaffale:
+          type: string
+          example: "A2"
+        categoria:
+          type: string
+          example: "Informatica"
+        colore:
+          type: string
+          example: "#3B82F6"
+        emoji:
+          type: string
+          example: "💻"
+
+    # --- POSTAZIONE ---
+    Prenotazione:
+      type: object
+      properties:
+        utenteId:
+          type: string
+          example: "664a1b2c3d4e5f6a7b8c9d0e"
+        data:
+          type: string
+          example: "2025-06-15"
+        ora:
+          type: string
+          example: "10:00"
+        durata:
+          type: integer
+          description: Durata in ore
+          default: 1
+          example: 2
+
+    Postazione:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "664a1b2c3d4e5f6a7b8c9d2g"
+        id_posto:
+          type: string
+          example: "A1"
+        aula:
+          type: string
+          example: "aulaA"
+        stato:
+          type: string
+          enum: [libera, occupata]
+          example: "libera"
+
+    PostazioneCreazione:
+      type: object
+      required: [id_posto, aula]
+      properties:
+        id_posto:
+          type: string
+          example: "C5"
+        aula:
+          type: string
+          example: "aulaC"
+
+    PrenotazioneSeat:
+      type: object
+      required: [data, ora]
+      properties:
+        data:
+          type: string
+          example: "2025-06-15"
+        ora:
+          type: string
+          example: "10:00"
+        durata:
+          type: integer
+          default: 1
+          example: 2
+
+    # --- STATS ---
+    Stats:
+      type: object
+      properties:
+        libri:
+          type: integer
+          example: 142
+        postazioni:
+          type: integer
+          example: 60
+        orari:
+          type: string
+          example: "8:00 - 20:00"
+
+    # --- CHAT ---
+    ChatMessaggio:
+      type: object
+      required: [messaggioUtente]
+      properties:
+        messaggioUtente:
+          type: string
+          example: "Come posso prenotare una postazione?"
+
+    ChatRisposta:
+      type: object
+      properties:
+        mittente:
+          type: string
+          example: "ai"
+        testo:
+          type: string
+          example: "Per prenotare una postazione vai nella sezione 'Postazioni', scegli l'aula e il posto desiderato."
+
+    # --- RISPOSTE GENERICHE ---
+    Messaggio:
+      type: object
+      properties:
+        messaggio:
+          type: string
+          example: "Operazione completata con successo"
+
+    Errore:
+      type: object
+      properties:
+        messaggio:
+          type: string
+          example: "Errore del server"
+
+
+# PATHS
+
+paths:
+
+  
+  # AUTH
+  
+  /auth/registrazione:
+    post:
+      tags: [Auth]
+      summary: Registra un nuovo utente
+      description: Crea un nuovo account studente. L'email deve essere univoca.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UtenteRegistrazione'
+      responses:
+        '200':
+          description: Registrazione avvenuta con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Messaggio'
+              example:
+                messaggio: "Registrazione avvenuta"
+        '400':
+          description: Email già registrata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+              example:
+                messaggio: "Questa email è già registrata"
+        '500':
+          description: Errore interno del server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Effettua il login
+      description: |
+        Autentica l'utente con email e password.
+        In caso di successo imposta due cookie HTTP-Only:
+        - `accessToken` — JWT valido **15 minuti**
+        - `refreshToken` — JWT valido **7 giorni**
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UtenteLogin'
+      responses:
+        '200':
+          description: Login effettuato con successo
+          headers:
+            Set-Cookie:
+              description: "Cookie accessToken e refreshToken impostati"
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messaggio:
+                    type: string
+                    example: "Login effettuato con successo!"
+                  utente:
+                    type: object
+                    properties:
+                      nome:
+                        type: string
+                        example: "Mario Rossi"
+                      email:
+                        type: string
+                        example: "mario.rossi@univ.it"
+                      ruolo:
+                        type: string
+                        enum: [studente, admin]
+                        example: "studente"
+        '401':
+          description: Password errata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+              example:
+                messaggio: "Password errata!"
+        '404':
+          description: Utente non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+              example:
+                messaggio: "Utente non trovato. Devi prima registrarti"
+        '500':
+          description: Errore interno del server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+  /auth/profilo:
+    get:
+      tags: [Auth]
+      summary: Recupera il profilo dell'utente autenticato
+      description: Restituisce i dati del profilo inclusi libri e postazioni prenotate (populate).
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Profilo utente completo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtenteProfilo'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '404':
+          description: Utente non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '500':
+          description: Errore interno del server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: Rinnova l'access token
+      description: |
+        Usa il `refreshToken` (dal cookie) per generare un nuovo `accessToken`.
+        Da chiamare automaticamente quando l'accessToken è scaduto.
+      responses:
+        '200':
+          description: Token rinnovato con successo
+          headers:
+            Set-Cookie:
+              description: "Nuovo accessToken impostato nel cookie"
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Messaggio'
+              example:
+                messaggio: "Token rinnovato"
+        '401':
+          description: Nessun refresh token presente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '403':
+          description: Refresh token non valido o scaduto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Effettua il logout
+      description: Cancella i cookie `accessToken` e `refreshToken`.
+      responses:
+        '200':
+          description: Logout effettuato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Messaggio'
+              example:
+                messaggio: "Logout effettuato con successo"
+
+  /auth/me/aggiorna:
+    put:
+      tags: [Auth]
+      summary: Aggiorna i dati del profilo
+      description: Modifica nome, email, matricola e/o facoltà dell'utente autenticato.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UtenteAggiornamento'
+      responses:
+        '200':
+          description: Profilo aggiornato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtenteProfilo'
+        '401':
+          description: Non autorizzato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '404':
+          description: Utente non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '500':
+          description: Errore durante l'aggiornamento
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+  /auth/me/password:
+    put:
+      tags: [Auth]
+      summary: Cambia la password
+      description: Aggiorna la password dell'utente dopo aver verificato quella attuale.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AggiornamentoPassword'
+      responses:
+        '200':
+          description: Password aggiornata con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Messaggio'
+              example:
+                messaggio: "Password aggiornata con successo!"
+        '400':
+          description: Password attuale errata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+              example:
+                messaggio: "La password attuale è errata"
+        '401':
+          description: Non autorizzato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '404':
+          description: Utente non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '500':
+          description: Errore durante il cambio password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+
+  # LIBRI
+
+  /libri:
+    get:
+      tags: [Libri]
+      summary: Recupera tutti i libri
+      description: Restituisce l'intero catalogo dei libri disponibili in biblioteca. Non richiede autenticazione.
+      responses:
+        '200':
+          description: Lista di tutti i libri
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Libro'
+        '500':
+          description: Errore nel caricamento libri
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+    post:
+      tags: [Libri]
+      summary: Crea un nuovo libro (solo admin)
+      description: Aggiunge un libro al catalogo. Richiede ruolo `admin`.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibroCreazione'
+      responses:
+        '201':
+          description: Libro aggiunto con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messaggio:
+                    type: string
+                    example: "Libro aggiunto"
+                  libro:
+                    $ref: '#/components/schemas/Libro'
+        '401':
+          description: Non autorizzato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '403':
+          description: Accesso negato (non admin)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+              example:
+                messaggio: "Accesso negato"
+        '500':
+          description: Errore inserimento libro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+  /libri/{id}/prenota:
+    post:
+      tags: [Libri]
+      summary: Prenota un libro
+      description: Decrementa le copie disponibili e registra la prenotazione nel profilo utente.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID MongoDB del libro
+          schema:
+            type: string
+            example: "664a1b2c3d4e5f6a7b8c9d1f"
+      responses:
+        '200':
+          description: Libro prenotato con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messaggio:
+                    type: string
+                    example: "Libro prenotato con successo!"
+                  libro:
+                    $ref: '#/components/schemas/Libro'
+        '400':
+          description: Nessuna copia disponibile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+              example:
+                messaggio: "Nessuna copia disponibile"
+        '401':
+          description: Non autorizzato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '404':
+          description: Libro non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '500':
+          description: Errore durante la prenotazione
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+  /libri/{id}/restituisci:
+    post:
+      tags: [Libri]
+      summary: Restituisce un libro prenotato
+      description: Incrementa le copie disponibili e rimuove il libro dal profilo utente.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID MongoDB del libro
+          schema:
+            type: string
+            example: "664a1b2c3d4e5f6a7b8c9d1f"
+      responses:
+        '200':
+          description: Libro restituito con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Messaggio'
+              example:
+                messaggio: "Libro restituito con successo!"
+        '401':
+          description: Non autorizzato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '404':
+          description: Libro non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '500':
+          description: Errore durante la restituzione
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+  # POSTAZIONI
+
+  /postazioni/{aula}:
+    get:
+      tags: [Postazioni]
+      summary: Recupera i posti di un'aula
+      description: |
+        Restituisce tutte le postazioni dell'aula specificata con il loro stato (`libera` / `occupata`).
+        Se vengono passati `data` e `ora` come query params, lo stato viene calcolato dinamicamente.
+      parameters:
+        - name: aula
+          in: path
+          required: true
+          description: Nome dell'aula (es. `aulaA`, `aulaB`)
+          schema:
+            type: string
+            example: "aulaA"
+        - name: data
+          in: query
+          required: false
+          description: Data della prenotazione (formato YYYY-MM-DD)
+          schema:
+            type: string
+            example: "2025-06-15"
+        - name: ora
+          in: query
+          required: false
+          description: Ora della prenotazione (formato HH:MM)
+          schema:
+            type: string
+            example: "10:00"
+      responses:
+        '200':
+          description: Lista delle postazioni con stato
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Postazione'
+        '500':
+          description: Errore nel caricamento postazioni
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+  /postazioni:
+    post:
+      tags: [Postazioni]
+      summary: Crea una nuova postazione (solo admin)
+      description: Aggiunge una postazione a un'aula. Richiede ruolo `admin`.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostazioneCreazione'
+      responses:
+        '201':
+          description: Postazione creata con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Messaggio'
+              example:
+                messaggio: "Postazione creata con successo!"
+        '401':
+          description: Non autorizzato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '403':
+          description: Accesso negato (non admin)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+              example:
+                messaggio: "Accesso negato: Solo gli admin"
+        '500':
+          description: Errore (possibile ID posto duplicato)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+              example:
+                messaggio: "Errore. Forse questo ID posto esiste già?"
+
+  /postazioni/{id_posto}/prenota:
+    post:
+      tags: [Postazioni]
+      summary: Prenota una postazione
+      description: |
+        Registra una prenotazione per il posto specificato.
+        Emette un evento **Socket.IO** `postazioneAggiornata` all'aula corrispondente per aggiornare la mappa in tempo reale.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id_posto
+          in: path
+          required: true
+          description: Identificativo del posto (es. `A1`, `B3`)
+          schema:
+            type: string
+            example: "A1"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrenotazioneSeat'
+      responses:
+        '200':
+          description: Postazione prenotata con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messaggio:
+                    type: string
+                    example: "Postazione prenotata con successo!"
+                  postazione:
+                    $ref: '#/components/schemas/Postazione'
+        '400':
+          description: Postazione occupata o dati mancanti
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+              example:
+                messaggio: "Postazione occupata"
+        '401':
+          description: Non autorizzato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '404':
+          description: Postazione non trovata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '500':
+          description: Errore durante la prenotazione
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+  /postazioni/{id_posto}/disdici:
+    post:
+      tags: [Postazioni]
+      summary: Disdici una prenotazione di postazione
+      description: |
+        Cancella tutte le prenotazioni dell'utente autenticato per il posto indicato.
+        Emette un evento **Socket.IO** `postazioneAggiornata` all'aula per aggiornare la mappa in tempo reale.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id_posto
+          in: path
+          required: true
+          description: Identificativo del posto (es. `A1`, `B3`)
+          schema:
+            type: string
+            example: "A1"
+      responses:
+        '200':
+          description: Prenotazione disdetta con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Messaggio'
+              example:
+                messaggio: "Prenotazione disdetta con successo!"
+        '400':
+          description: Nessuna prenotazione trovata per questo posto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '401':
+          description: Non autorizzato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '404':
+          description: Postazione non trovata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '500':
+          description: Errore durante la disdetta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+
+  # STATS
+
+  /stats:
+    get:
+      tags: [Stats]
+      summary: Statistiche generali della biblioteca
+      description: Restituisce il numero totale di libri, postazioni e gli orari di apertura.
+      responses:
+        '200':
+          description: Statistiche biblioteca
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stats'
+        '500':
+          description: Errore nel calcolo delle statistiche
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+
+
+  # CHAT AI
+
+  /chat:
+    post:
+      tags: [Chat]
+      summary: Invia un messaggio all'assistente AI
+      description: |
+        Elabora il messaggio dell'utente tramite **Google Gemini 2.5 Flash Lite**.
+        L'AI è configurata come assistente universitario: risponde solo a domande inerenti la biblioteca e l'ateneo.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatMessaggio'
+      responses:
+        '200':
+          description: Risposta dell'assistente AI
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRisposta'
+        '400':
+          description: Nessun messaggio fornito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+              example:
+                error: "Nessun messaggio fornito"
+        '500':
+          description: Errore durante l'elaborazione AI
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Errore interno durante l'elaborazione dell'AI"
+
+
+  # HEALTH CHECK
+  
+  /health:
+    get:
+      tags: [Health]
+      summary: Verifica stato del server
+      description: Endpoint di health check. Restituisce un messaggio di conferma se il server è operativo.
+      responses:
+        '200':
+          description: Server operativo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Server is healthy"

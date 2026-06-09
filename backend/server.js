@@ -7,6 +7,9 @@ import dotenv from "dotenv";
 import http from "http";
 import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
+import { readFileSync } from "fs";
+import {parse} from "yaml";
 
 import Libro from "./models/Libro.js";
 import Postazione from "./models/Postazione.js";
@@ -25,6 +28,10 @@ const app = express(); //inizializzazione app
 
 app.use(express.json()); //ricezione di json da parte del server
 app.use(cookieParser());
+
+// Swagger UI
+const swaggerDocument = parse(readFileSync("./swagger.yaml", "utf8"));
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(cors({ //premette comunicazione
     origin: process.env.FRONTEND_URL || "http://localhost:5173", // L'URL esatto del tuo frontend React
