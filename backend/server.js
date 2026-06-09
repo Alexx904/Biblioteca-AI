@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import http from "http";
 import { Server } from "socket.io";
+import cookieParser from "cookie-parser";
 
 //caricamento delle variabili d'ambiente
 dotenv.config();
@@ -20,8 +21,12 @@ import chat from "./routes/chat.js"
 const app = express(); //inizializzazione app
 
 app.use(express.json()); //ricezione di json da parte del server
+app.use(cookieParser());
 
-app.use(cors()); //comunicazione col server
+app.use(cors({ //premette comunicazione
+    origin: "http://localhost:5173", // L'URL esatto del tuo frontend React
+    credentials: true                // FONDAMENTALE: permette l'uso dei cookie
+}));
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("Connesso a MongoDB"))
@@ -39,7 +44,8 @@ const httpServer = http.createServer(app);
 const io = new Server(httpServer,{
     cors:{
         origin: "http://localhost:5173",
-        methods: ["GET", "POST"]
+        methods: ["GET", "POST"],
+        credentials: true
     }
 });
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Paper, Grid, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import apiFetch from './api';
 
 function Profilo({ open, onClose }) {
     const [profilo, setProfilo] = useState(null);
@@ -9,13 +10,8 @@ function Profilo({ open, onClose }) {
         if (!open) return;
 
         const fetchProfilo = async () => {
-            const token = localStorage.getItem("token");
-            if (!token) return;
-
             try {
-                const res = await fetch("http://localhost:3000/api/auth/profilo", {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
+                const res = await apiFetch("/api/auth/profilo");
                 if (res.ok) {
                     const data = await res.json();
                     setProfilo(data);
@@ -33,23 +29,14 @@ function Profilo({ open, onClose }) {
     const libri = profilo?.libriPrenotati || [];
 
     const handleRestituisciLibro = async (idLibro) => {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
         try {
-            const res = await fetch(`http://localhost:3000/api/libri/${idLibro}/restituisci`, {
-                method: "POST",
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-
+            const res = await apiFetch(`/api/libri/${idLibro}/restituisci`, { method: "POST" });
             if (res.ok) {
                 alert("Libro restituito con successo!");
-                // Aggiorna visivamente il profilo togliendo il libro dalla lista
                 setProfilo(prev => ({
                     ...prev,
                     libriPrenotati: prev.libriPrenotati.filter(l => l._id !== idLibro)
                 }));
-                // Diciamo al catalogo di aggiungere +1 alle copie
                 window.dispatchEvent(new Event("aggiornaDati"));
             }
         } catch (err) {
@@ -59,20 +46,12 @@ function Profilo({ open, onClose }) {
 
     //disdire prenotazione
     const handleDisdiciPostazione = async (idPosto) => {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
         if (!window.confirm(`Vuoi davvero disdire il posto ${idPosto}?`)) return;
-
+ 
         try {
-            const res = await fetch(`http://localhost:3000/api/postazioni/${idPosto}/disdici`, {
-                method: "POST",
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-
+            const res = await apiFetch(`/api/postazioni/${idPosto}/disdici`, { method: "POST" });
             if (res.ok) {
                 alert("Prenotazione disdetta con successo!");
-                // Rimuovi il posto dalla lista visiva
                 setProfilo(prev => ({
                     ...prev,
                     postazioniPrenotate: prev.postazioniPrenotate.filter(p => p.id_posto !== idPosto)
@@ -81,7 +60,7 @@ function Profilo({ open, onClose }) {
         } catch (err) {
             console.error(err);
         }
-    }
+    };
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>

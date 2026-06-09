@@ -9,11 +9,13 @@ import {ThemeProvider} from "@mui/material/styles";
 import {lightTheme, darkTheme} from "./Theme";
 import { CssBaseline } from "@mui/material";
 import WidgetChat from "./WidgetChat";
+import { ThemeContextProvider, useThemeContext } from "./ThemeContext";
 
 
 
-function App() {
-  const currentTheme =lightTheme; 
+function AppContent() {
+  const {isDark} = useThemeContext();
+  const currentTheme = isDark ? darkTheme:lightTheme; 
   return(
     <>
       <ThemeProvider theme={currentTheme}>
@@ -29,6 +31,18 @@ function App() {
       </ThemeProvider>
     </>
   );
+}
+
+/**
+ * App avvolge tutto nel ThemeContextProvider così ogni componente
+ * dell'albero può leggere/modificare il tema tramite useThemeContext().
+ */
+function App() {
+    return (
+        <ThemeContextProvider>
+            <AppContent />
+        </ThemeContextProvider>
+    );
 }
 
 export default App;

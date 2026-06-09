@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Box, Typography, Grid, Paper, Tooltip, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import EventSeatIcon from '@mui/icons-material/EventSeat';
 import { io } from "socket.io-client"; // npm install socket.io-client --legacy-peer-deps
+import apiFetch from './api';
+
 
 function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro, oraFiltro }) {
   const [postazioni, setPostazioni] = useState([]);
@@ -14,25 +16,46 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
   const [oraPrenotazione, setOraPrenotazione] = useState('');
   const [durata, setDurata] = useState(1);
 
+  // Traccia stato login tramite eventi 
+  const [isLoggato, setIsLoggato] = useState(false);
+
   const socketRef = useRef(null);
 
-  const isTokenValido = () => {
-    const token = localStorage.getItem("token");
-    if (!token || token === "null") return false;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.exp * 1000 > Date.now();
-    } catch {
-      return false;
-    }
-  };
+  //controllo login
+  useEffect(() => {
+    const verificaLogin = async () => {
+      try {
+        const res = await apiFetch("/api/auth/profilo");
+        setIsLoggato(res.ok);
+      } catch {
+        setIsLoggato(false);
+      }
+    };
+
+    verificaLogin();
+
+    const onLogin = () => setIsLoggato(true);
+    const onScaduta = () => setIsLoggato(false);
+
+    window.addEventListener("loginEffettuato", onLogin);
+    window.addEventListener("sessioneScaduta", onScaduta);
+
+    return () => {
+      window.removeEventListener("loginEffettuato", onLogin);
+      window.removeEventListener("sessioneScaduta", onScaduta);
+    };
+  }, []);
+
+
   const fetchPostazione = useCallback(async () => {
     try {
       const params = new URLSearchParams();
       if (dataFiltro) params.append('data', dataFiltro);
       if (oraFiltro) params.append('ora', oraFiltro);
 
-      const res = await fetch(`http://localhost:3000/api/postazioni/${aulaSelezionata}?${params}`);
+      const res = await fetch(`http://localhost:3000/api/postazioni/${aulaSelezionata}?${params}`, {
+        credentials: "include"
+      });
       if (res.ok) {
         const data = await res.json();
         setPostazioni(data);
@@ -43,21 +66,14 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
   }, [aulaSelezionata, dataFiltro, oraFiltro]);
 
   useEffect(() => {
-    // Crea connessione socket una sola volta
-    socketRef.current = io("http://localhost:3000");
-
-    return () => {
-      socketRef.current.disconnect();
-    };
+    socketRef.current = io("http://localhost:3000", { withCredentials: true });
+    return () => { socketRef.current.disconnect(); };
   }, []);
 
   useEffect(() => {
     if (!socketRef.current) return;
-
-    // Entra nella stanza dell'aula selezionata
     socketRef.current.emit("joinAula", aulaSelezionata);
 
-    // Ascolta aggiornamenti realtime: aggiorna solo il posto interessato
     const handleAggiornamento = ({ id_posto, stato }) => {
       setPostazioni(prev =>
         prev.map(p => p.id_posto === id_posto ? { ...p, stato } : p)
@@ -65,10 +81,7 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
     };
 
     socketRef.current.on("postazioneAggiornata", handleAggiornamento);
-
-    return () => {
-      socketRef.current.off("postazioneAggiornata", handleAggiornamento);
-    };
+    return () => { socketRef.current.off("postazioneAggiornata", handleAggiornamento); };
   }, [aulaSelezionata]);
 
   useEffect(() => {
@@ -82,45 +95,40 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
   // Aggiorna le postazioni mostrate quando cambia l'aula
 
   const handleSeleziona = (postazione) => {
-
-    // Blocco login — il click apre il dialog solo se loggati
-    if (!isTokenValido()) {
+    if (!isLoggato) {
       alert("Devi effettuare il login per prenotare una postazione!");
       return;
     }
+    if (postazione.stato === "occupata") return;
 
-    if (postazione.stato === 'occupata') return; // Non puoi selezionare un posto occupato
-    // Pre-compila i campi con i filtri già selezionati nella barra sopra
     if (dataFiltro) setDataPrenotazione(dataFiltro);
     if (oraFiltro) setOraPrenotazione(oraFiltro);
 
-    setPostoDaPrenotare(postazione); //salvo il posto che voglio prenotare
+    setPostoDaPrenotare(postazione);
     setOpenPopup(true);
   };
 
   const confermaPrenotazione = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return alert("Devi effettuare il login per prenotare!");
     if (!dataPrenotazione || !oraPrenotazione) return alert("Inserisci data e ora!");
 
     try {
-      const res = await fetch(`http://localhost:3000/api/postazioni/${postoDaPrenotare.id_posto}/prenota`, {
+      const res = await apiFetch(`/api/postazioni/${postoDaPrenotare.id_posto}/prenota`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
         body: JSON.stringify({ data: dataPrenotazione, ora: oraPrenotazione, durata })
       });
 
       if (res.ok) {
         alert("Posto prenotato!");
-        setPostazioni(prev => prev.map(p => p.id_posto === postoDaPrenotare.id_posto ? { ...p, stato: "occupata" } : p));
+        setPostazioni(prev =>
+          prev.map(p => p.id_posto === postoDaPrenotare.id_posto ? { ...p, stato: "occupata" } : p)
+        );
         setOpenPopup(false);
+      } else if (res.status === 401) {
+        alert("Sessione scaduta. Effettua nuovamente il login.");
       } else {
         alert((await res.json()).messaggio);
       }
-    } catch (er) { console.error(er); }
+    } catch (err) { console.error(err); }
   };
 
   const getBgColor = (postazione) => {

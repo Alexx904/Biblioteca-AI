@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export function verificaToken(req,res,next){
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1]; //formato Bearer
+    const token = req.cookies?.accessToken;
 
     if(!token){
         return res.status(401).json({messaggio: "Manca token"});
@@ -13,7 +12,7 @@ export function verificaToken(req,res,next){
         req.utente = decoded;
         next();
     }catch(err){
-        return res.status(403).json({messaggio: "Token scaduto o non valido"});
+        return res.status(401).json({messaggio: "Token scaduto o non valido"});
     }
 };
 

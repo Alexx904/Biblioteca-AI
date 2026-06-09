@@ -8,18 +8,20 @@ import { MenuBook } from "@mui/icons-material";
 import Profilo from "./Profilo";
 import AdminDashboard from "./AdminDashboard";
 import { useEffect } from "react";
+import Impostazioni from "./Impostazioni";
+import apiFetch from "./api";
 
 function NavBar() {
 
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-    const clickHamburger = () => {
-        setIsMenuOpen(!isMenuOpen);
-    }
-
-    const [open, setOpen] = React.useState(false);
-
+    const [open, setOpen] = React.useState(false); //Dialog SignupForm
     const [utenteLoggato, setUtenteLoggato] = useState(null);
+
+    const [elenco, setElenco] = useState(null); //ancora il menu a tendina
+    const menuAperto = Boolean(elenco);
+
+    const [popupProfiloAperto, setPopupProfiloAperto] = useState(false);
+    const [popupAdminAperto, setPopupAdminAperto] = useState(false);
+    const [popupImpostazioniAperto, setPopupImpostazioniAperto] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -29,16 +31,6 @@ function NavBar() {
         setOpen(false);
     }
 
-    // Funzione che scatta quando il login va a buon fine
-    const handleLoginSuccess = (datiUtente) => {
-        setUtenteLoggato(datiUtente); // Salva l'utente
-        setOpen(false); // Chiude il popup
-    };
-
-    const [elenco, setElenco] = useState(null);    
-
-    const menuAperto = Boolean(elenco);
-
     const handleApriMenu = (e) => {
         setElenco(e.currentTarget);
     };
@@ -47,87 +39,93 @@ function NavBar() {
         setElenco(null);
     };
 
+    // Funzione che scatta quando il login va a buon fine
+    const handleLoginSuccess = (datiUtente) => {
+        setUtenteLoggato(datiUtente); // Salva l'utente
+        setOpen(false); // Chiude il popup
+    };
 
-    // Funzione per uscire
-    const handleLogout = () => {
-        localStorage.removeItem("token");
+    //Logout: chiama il backend per revocare il refresh token
+    const handleLogout = async () => {
+        try {
+            await apiFetch("/api/auth/logout", { method: "POST" });
+        } catch (err) {
+            console.error("Errore durante il logout:", err);
+        }
         setUtenteLoggato(null);
         handleChiudiMenu();
     };
 
-    const [popupProfiloAperto, setPopupProfiloAperto] = useState(false);
-    const [popupAdminAperto, setPopupAdminAperto] = useState(false);
+    //hamburger
+    const [isMenuOpen, setIsMenuOpen] = useState(false); 
+    
+    const clickHamburger = () => {
+        setIsMenuOpen(!isMenuOpen);
+    }    
 
-
-    useEffect(() => {
-        const controllaLogin = async () => {
-            const token = localStorage.getItem("token");
-            if (token) {
-                // Se c'è un token, chiediamo al server i dati completi dell'utente
-                try {
-                    const res = await fetch("http://localhost:3000/api/auth/profilo", {
-                        headers: { "Authorization": `Bearer ${token}` }
-                    });
-                    if (res.ok) {
-                        const datiUtente = await res.json();
-                        setUtenteLoggato(datiUtente); // Salviamo l'oggetto vero e proprio!
-                    } else {
-                        // Token scaduto o non valido
-                        localStorage.removeItem("token");
-                        setUtenteLoggato(null); 
-                    }
-                } catch (err) {
-                    console.error("Errore recupero utente NavBar:", err);
-                    setUtenteLoggato(null);
-                }
+    // ── Controlla se c'è una sessione attiva (cookie) ────────────────────────
+    const controllaLogin = async () => {
+        try {
+            const res = await apiFetch("/api/auth/profilo");
+            if (res.ok) {
+                const datiUtente = await res.json();
+                setUtenteLoggato(datiUtente);
             } else {
                 setUtenteLoggato(null);
             }
-        };
+        } catch (err) {
+            console.error("Errore recupero utente NavBar:", err);
+            setUtenteLoggato(null);
+        }
+    };
+ 
+    useEffect(() => {
+        controllaLogin(); // Controlla sessione all'avvio
 
-        controllaLogin();
-
-        // Mettiamo in ascolto entrambi gli eventi per essere sicuri al 100%
-        window.addEventListener("aggiornaDati", controllaLogin);
+        // Ricarica i dati dopo login, aggiornamento dati, o sessione scaduta
+        const handleSessioneScaduta = () => setUtenteLoggato(null);
+ 
+        window.addEventListener("aggiornaDati",    controllaLogin);
         window.addEventListener("loginEffettuato", controllaLogin);
-
+        window.addEventListener("sessioneScaduta", handleSessioneScaduta);
+ 
         return () => {
-            window.removeEventListener("aggiornaDati", controllaLogin);
+            window.removeEventListener("aggiornaDati",    controllaLogin);
             window.removeEventListener("loginEffettuato", controllaLogin);
+            window.removeEventListener("sessioneScaduta", handleSessioneScaduta);
         };
     }, []);
 
     return (
         <>
-            <Stack direction="row" spacing={2} sx={{ alignItems: 'center', display: { xs: 'none', md: 'flex' } }}> {/*Stack che contiene i NavLink. display none su schermi piccoli, flex su schermi più grandi*/}
-                <NavLink name="Catalogo" link="#catalogo" />
+            {/* NavLink desktop */}
+            <Stack direction="row" spacing={2} sx={{ alignItems: "center", display: { xs: "none", md: "flex" } }}>
+                <NavLink name="Catalogo"   link="#catalogo" />
                 <NavLink name="Postazioni" link="#postazioni" />
-                <NavLink name="Chat" link="#chat" />
+                <NavLink name="Chat"       link="#chat" />
             </Stack>
-
-            {/* se utente è loggato mostra Nome e Logout */}
+ 
+            {/* Area utente: loggato → menu tendina, non loggato → bottone SignUp/Login */}
             {utenteLoggato ? (
                 <>
+                    {/* Box cliccabile con avatar e nome */}
                     <Box
                         onClick={handleApriMenu}
                         sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 1.5,
-                            padding: '5px 15px',
-                            borderRadius: 5,
-                            cursor: 'pointer',
-                            transition: '0.3s',
+                            display: "flex", alignItems: "center", gap: 1.5,
+                            padding: "5px 15px", borderRadius: 5,
+                            cursor: "pointer", transition: "0.3s"
                         }}
                     >
-                        <Avatar sx={{ width: 30, height: 30, bgcolor: 'primary.main' }}>
+                        <Avatar sx={{ width: 30, height: 30, bgcolor: "primary.main" }}>
                             {utenteLoggato.nome.charAt(0).toUpperCase()}
                         </Avatar>
-                        <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                        <Typography variant="body1" sx={{ fontWeight: "bold" }}>
                             {utenteLoggato.nome}
                         </Typography>
                     </Box>
-
+ 
+                    {/* Menu a tendina */}
                     <Menu
                         anchorEl={elenco}
                         open={menuAperto}
@@ -135,67 +133,57 @@ function NavBar() {
                         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                         transformOrigin={{ vertical: "top", horizontal: "right" }}
                     >
-                        <MenuItem onClick={() => {
-                            handleChiudiMenu(); // Chiude il menu a tendina
-                            setPopupProfiloAperto(true); // Apre il popup delle prenotazioni
-                        }}>
+                        <MenuItem onClick={() => { handleChiudiMenu(); setPopupProfiloAperto(true); }}>
                             Le mie Prenotazioni
                         </MenuItem>
-                        <MenuItem onClick={handleChiudiMenu}>Impostazioni</MenuItem>
-                        <MenuItem onClick={handleLogout} sx={{ color: "grammar-error.main", fontWeight: "bold" }}>Logout</MenuItem>
-
-                        {utenteLoggato && utenteLoggato.ruolo === 'admin' && (
-                            <MenuItem onClick={() => { handleChiudiMenu(); setPopupAdminAperto(true); }} sx={{ color: 'error.main', fontWeight: 'bold' }}>
+ 
+                        <MenuItem onClick={() => { handleChiudiMenu(); setPopupImpostazioniAperto(true); }}>
+                            Impostazioni
+                        </MenuItem>
+ 
+                        <MenuItem onClick={handleLogout} sx={{ color: "error.main", fontWeight: "bold" }}>
+                            Logout
+                        </MenuItem>
+ 
+                        {utenteLoggato?.ruolo === "admin" && (
+                            <MenuItem
+                                onClick={() => { handleChiudiMenu(); setPopupAdminAperto(true); }}
+                                sx={{ color: "error.main", fontWeight: "bold" }}
+                            >
                                 Pannello Admin
                             </MenuItem>
                         )}
                     </Menu>
                 </>
-
             ) : (
-                /* altrimenti mostra il bottone SignUp/Login */
                 <Button variant="contained" color="secondary" onClick={handleClickOpen}>
-                    SignUp/Login
+                    SignUp / Login
                 </Button>
             )}
-
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                maxWidth="xs"
-                fullWidth
-            >
+ 
+            {/* Dialog login/registrazione */}
+            <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
                 <SignupForm onLoginSuccess={handleLoginSuccess} />
             </Dialog>
-
+ 
+            {/* Dialog prenotazioni */}
             <Profilo
                 open={popupProfiloAperto}
                 onClose={() => setPopupProfiloAperto(false)}
             />
-
+ 
+            {/* Dialog impostazioni */}
+            <Impostazioni
+                open={popupImpostazioniAperto}
+                onClose={() => setPopupImpostazioniAperto(false)}
+            />
+ 
+            {/* Dialog admin */}
             <AdminDashboard
                 open={popupAdminAperto}
                 onClose={() => setPopupAdminAperto(false)}
             />
-
         </>
     );
-
-    /*    return(
-            <>
-                <nav className={`header__nav ${isMenuOpen ? "open" : ""}`} id="headerNav">
-                    <ul className="header__nav-list">
-                        <NavLink name="Catalogo" link="#catalogo"/>
-                        <NavLink name="Postazioni" link="#postazioni"/>
-                        <NavLink name="Chat" link="#chat"/>
-                        <li><button className="buttonNav" id="openPopup">Login / Signup</button></li>
-                    </ul>
-                </nav>
-    
-                <Hamburger gestioneClick={clickHamburger}/>
-            </>
-        );
-    }
-    */
 }
 export default NavBar;

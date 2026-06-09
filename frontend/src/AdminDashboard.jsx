@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, Paper, Grid, MenuItem, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import apiFetch from './api';
 
 function AdminDashboard({ open, onClose }) {
   // Stati per il form dei Libri
@@ -18,39 +19,39 @@ function AdminDashboard({ open, onClose }) {
   // INVIA NUOVO LIBRO
   const handleAggiungiLibro = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:3000/api/libri", {
+      const res = await apiFetch("/api/libri", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-        body: JSON.stringify({ 
-            ...libroData, 
-            copieTotali: Number(libroData.copieTotali),
-            copieDisponibili: Number(libroData.copieTotali)
-        }) 
+        body: JSON.stringify({
+          ...libroData,
+          copieTotali: Number(libroData.copieTotali),
+          copieDisponibili: Number(libroData.copieTotali)
+        })
       });
       if (res.ok) {
         alert("Libro aggiunto!");
-        setLibroData({ titolo: '', autore: '', descrizione: '', copieTotali: '', scaffale: '', categoria: '', colore: '#7c3aed'});
+        setLibroData({ titolo: "", autore: "", descrizione: "", copieTotali: "", scaffale: "", categoria: "", colore: "#7c3aed", emoji: "📚" });
         window.dispatchEvent(new Event("aggiornaDati"));
-      } else alert((await res.json()).messaggio);
+      } else {
+        alert((await res.json()).messaggio);
+      }
     } catch (err) { console.error(err); }
   };
 
   // INVIA NUOVA POSTAZIONE
   const handleAggiungiPosto = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:3000/api/postazioni", {
+      const res = await apiFetch("/api/postazioni", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-        body: JSON.stringify(postoData) 
+        body: JSON.stringify(postoData)
       });
       if (res.ok) {
         alert("Postazione aggiunta!");
-        setPostoData({ id_posto: '', aula: 'aulaA' });
-      } else alert((await res.json()).messaggio);
+        setPostoData({ id_posto: "", aula: "aulaA" });
+      } else {
+        alert((await res.json()).messaggio);
+      }
     } catch (err) { console.error(err); }
   };
 
@@ -61,7 +62,7 @@ function AdminDashboard({ open, onClose }) {
       </DialogTitle>
       <DialogContent sx={{ p: 4, bgcolor: '#f1f5f9' }}>
         <Grid container spacing={4}>
-          
+
           {/* FORM AGGIUNGI LIBRO */}
           <Grid item xs={12} md={6}>
             <Paper sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>

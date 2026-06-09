@@ -7,6 +7,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import React from 'react';
 import SectionTitle from './SectionTitle';
 import { useState, useEffect } from 'react';
+import apiFetch from './api';
 
 const categorie = [
   { label: 'Tutti' },
@@ -37,62 +38,51 @@ function Catalogo() {
   // Carica libri dal backend
   const fetchLibri = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/libri");
+      const res = await fetch("http://localhost:3000/api/libri", { credentials: "include" });
       if (res.ok) setLibri(await res.json());
     } catch (err) {
       console.error("Errore caricamento libri:", err);
     }
   };
 
-//prenotazione libro
-const fetchLibriPrenotati = async () => {
-    const token = localStorage.getItem("token");
-    if (!token || token === "null" || token === "undefined") {
-      setLibriPrenotatiIds([]);
-      return;
-    }
+  //prenotazione libro
+  const fetchLibriPrenotati = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/auth/profilo", {
-        headers: { "Authorization": `Bearer ${token}` }
-      });
+      const res = await apiFetch("/api/auth/profilo");
       if (res.ok) {
         const data = await res.json();
-        const ids = (data.libriPrenotati || []).map(l => l._id || l);
-        setLibriPrenotatiIds(ids.map(id => id.toString()));
+        const ids = (data.libriPrenotati || []).map(l => (l._id || l).toString());
+        setLibriPrenotatiIds(ids);
+      } else {
+        // Non loggato o sessione scaduta
+        setLibriPrenotatiIds([]);
       }
     } catch (err) {
-      console.error("Errore caricamento profilo:", err);
+      console.error("Errore caricamento libri prenotati:", err);
+      setLibriPrenotatiIds([]);
     }
   };
 
-    useEffect(() => {
+  useEffect(() => {
     fetchLibri();
     fetchLibriPrenotati();
 
     const aggiorna = () => { fetchLibri(); fetchLibriPrenotati(); };
     window.addEventListener("aggiornaDati", aggiorna);
-    
     window.addEventListener("loginEffettuato", fetchLibriPrenotati);
-    
+    window.addEventListener("sessioneScaduta", () => setLibriPrenotatiIds([]));
+
     return () => {
-        window.removeEventListener("aggiornaDati", aggiorna);
-        window.removeEventListener("loginEffettuato", fetchLibriPrenotati); // ✅
+      window.removeEventListener("aggiornaDati", aggiorna);
+      window.removeEventListener("loginEffettuato", fetchLibriPrenotati); // ✅
     };
-}, []);
+  }, []);
 
 
   // Prenotazione libro
   const handlePrenotaLibro = async (idLibro) => {
-    const token = localStorage.getItem("token");
-    if (!token || token === "null" || token === "undefined") {
-      alert("Devi effettuare il login per poter prenotare un libro!");
-      return;
-    }
     try {
-      const res = await fetch(`http://localhost:3000/api/libri/${idLibro}/prenota`, {
-        method: "POST",
-        headers: { "Authorization": `Bearer ${token}` }
-      });
+      const res = await apiFetch(`/api/libri/${idLibro}/prenota`, { method: "POST" });
       if (res.ok) {
         alert("Libro prenotato con successo! Lo troverai in 'Le mie prenotazioni'.");
         setLibriPrenotatiIds(prev => [...prev, idLibro]);
@@ -100,6 +90,8 @@ const fetchLibriPrenotati = async () => {
           l._id === idLibro ? { ...l, copieDisponibili: l.copieDisponibili - 1 } : l
         ));
         window.dispatchEvent(new Event("aggiornaDati"));
+      } else if (res.status === 401) {
+        alert("Devi effettuare il login per poter prenotare un libro!");
       } else {
         const data = await res.json();
         alert("Errore: " + data.messaggio);
@@ -109,13 +101,8 @@ const fetchLibriPrenotati = async () => {
 
   // Restituzione libro
   const handleRestituisciLibro = async (idLibro) => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
     try {
-      const res = await fetch(`http://localhost:3000/api/libri/${idLibro}/restituisci`, {
-        method: "POST",
-        headers: { "Authorization": `Bearer ${token}` }
-      });
+      const res = await apiFetch(`/api/libri/${idLibro}/restituisci`, { method: "POST" });
       if (res.ok) {
         alert("Libro restituito con successo!");
         setLibriPrenotatiIds(prev => prev.filter(id => id !== idLibro));
@@ -129,99 +116,99 @@ const fetchLibriPrenotati = async () => {
       }
     } catch (err) { console.error(err); }
   };
+  
+  const libriFiltrati = libri.filter(libro => {
+    const matchCerca = libro.titolo.toLowerCase().includes(cerca.toLowerCase()) || libro.autore.toLowerCase().includes(cerca.toLowerCase());
+    const matchCategoria = categoriaAttiva === 'Tutti' || libro.categoria === categoriaAttiva;
+    const matchDisponibili = !soloDisponibili || libro.copieDisponibili > 0;
+    return matchCerca && matchCategoria && matchDisponibili;
+  });
 
-const libriFiltrati = libri.filter(libro => {
-  const matchCerca = libro.titolo.toLowerCase().includes(cerca.toLowerCase()) || libro.autore.toLowerCase().includes(cerca.toLowerCase());
-  const matchCategoria = categoriaAttiva === 'Tutti' || libro.categoria === categoriaAttiva;
-  const matchDisponibili = !soloDisponibili || libro.copieDisponibili > 0;
-  return matchCerca && matchCategoria && matchDisponibili;
-});
+  return (
+    <Box component="section" id="catalogo" sx={{ py: 8 }}>
+      <Container maxWidth="lg">
 
-return (
-  <Box component="section" id="catalogo" sx={{ py: 8 }}>
-    <Container maxWidth="lg">
-
-      {/* TITOLO */}
-      <SectionTitle title="Catalogo Libri" subtitle="Sfoglia l'intera collezione" />
+        {/* TITOLO */}
+        <SectionTitle title="Catalogo Libri" subtitle="Sfoglia l'intera collezione" />
 
 
-      {/* BARRA DI RICERCA */}
-      <Paper elevation={2} sx={{ display: 'flex', alignItems: 'center', px: 3, py: 1, borderRadius: 4, mb: 4, gap: 2 }}>
-        <SearchIcon color='primary' />
-        <InputBase
-          fullWidth
-          placeholder="Cerca titolo o autore..."
-          value={cerca}
-          onChange={e => setCerca(e.target.value)}
-          sx={{ fontSize: '1rem' }}
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={soloDisponibili}
-              onChange={e => setSoloDisponibili(e.target.checked)}
-              color='primary'
-            />
-          }
-          label="Solo disponibili"
-          sx={{ whiteSpace: 'nowrap', color: 'text.secondary', mr: 0 }}
-        />
+        {/* BARRA DI RICERCA */}
+        <Paper elevation={2} sx={{ display: 'flex', alignItems: 'center', px: 3, py: 1, borderRadius: 4, mb: 4, gap: 2 }}>
+          <SearchIcon color='primary' />
+          <InputBase
+            fullWidth
+            placeholder="Cerca titolo o autore..."
+            value={cerca}
+            onChange={e => setCerca(e.target.value)}
+            sx={{ fontSize: '1rem' }}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={soloDisponibili}
+                onChange={e => setSoloDisponibili(e.target.checked)}
+                color='primary'
+              />
+            }
+            label="Solo disponibili"
+            sx={{ whiteSpace: 'nowrap', color: 'text.secondary', mr: 0 }}
+          />
 
-      </Paper>
+        </Paper>
 
-      {/* FILTRI CATEGORIE */}
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 5, }}>
-        {categorie.map(cat => (
-          <Button
-            key={cat.label}
-            onClick={() => setCategoriaAttiva(cat.label)}
-            variant={categoriaAttiva === cat.label ? 'contained' : 'outlined'}
-            size="small"
-            sx={{
-              borderRadius: 10,
-              textTransform: 'none',
-              fontWeight: 600,
-              fontSize: '1rem',
-              px: 2,
-              backgroundColor: categoriaAttiva === cat.label ? 'primary.main' : 'background.card',
-              '&:hover': {
-                backgroundColor: categoriaAttiva === cat.label ? 'primary.dark' : 'background.default',
-              }
-            }}
-          >
-            {cat.label}
-          </Button>
-        ))}
-      </Box>
+        {/* FILTRI CATEGORIE */}
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 5, }}>
+          {categorie.map(cat => (
+            <Button
+              key={cat.label}
+              onClick={() => setCategoriaAttiva(cat.label)}
+              variant={categoriaAttiva === cat.label ? 'contained' : 'outlined'}
+              size="small"
+              sx={{
+                borderRadius: 10,
+                textTransform: 'none',
+                fontWeight: 600,
+                fontSize: '1rem',
+                px: 2,
+                backgroundColor: categoriaAttiva === cat.label ? 'primary.main' : 'background.card',
+                '&:hover': {
+                  backgroundColor: categoriaAttiva === cat.label ? 'primary.dark' : 'background.default',
+                }
+              }}
+            >
+              {cat.label}
+            </Button>
+          ))}
+        </Box>
 
-      {/* GRIGLIA LIBRI */}
-      <Grid container spacing={3}>
-        {libriFiltrati.map(libro => {
-          const giaPrenotato = libriPrenotatiIds.includes(libro._id.toString());
-          return (
-            <Grid key={libro._id} size={{ xs: 12, sm: 6, md: 4 }}>
-              <Card elevation={2} sx={{borderTop: '4px solid #16a34a', height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <CardContent sx={{ flexGrow: 1, pt: 3 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
-                    {/* ... Icona, Titolo, Autore, Descrizione ... */}
-                    <Box>
-                      <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{libro.titolo}</Typography>
-                      <Typography variant="body2">{libro.autore}</Typography>
+        {/* GRIGLIA LIBRI */}
+        <Grid container spacing={3}>
+          {libriFiltrati.map(libro => {
+            const giaPrenotato = libriPrenotatiIds.includes(libro._id.toString());
+            return (
+              <Grid key={libro._id} size={{ xs: 12, sm: 6, md: 4 }}>
+                <Card elevation={2} sx={{ borderTop: '4px solid #16a34a', height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <CardContent sx={{ flexGrow: 1, pt: 3 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
+                      {/* ... Icona, Titolo, Autore, Descrizione ... */}
+                      <Box>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{libro.titolo}</Typography>
+                        <Typography variant="body2">{libro.autore}</Typography>
+                      </Box>
                     </Box>
-                  </Box>
 
-                  {/* Copie: Mostriamo dinamicamente Disponibili/Totali */}
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 2 }}>
-                    <Chip
-                      label={`✓ ${libro.copieDisponibili}/${libro.copieTotali} COPIE`}
-                      size="small"
-                      sx={{ backgroundColor: '#d1fae5', color: '#065f46', fontWeight: 'bold' }}
-                    />
-                    <Typography variant="caption">Scaffale {libro.scaffale}</Typography>
-                  </Box>
-                </CardContent>
+                    {/* Copie: Mostriamo dinamicamente Disponibili/Totali */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 2 }}>
+                      <Chip
+                        label={`✓ ${libro.copieDisponibili}/${libro.copieTotali} COPIE`}
+                        size="small"
+                        sx={{ backgroundColor: '#d1fae5', color: '#065f46', fontWeight: 'bold' }}
+                      />
+                      <Typography variant="caption">Scaffale {libro.scaffale}</Typography>
+                    </Box>
+                  </CardContent>
 
-                <Box sx={{ px: 2, pb: 2 }}>
+                  <Box sx={{ px: 2, pb: 2 }}>
                     {giaPrenotato ? (
                       /* Pulsante RESTITUISCI — se il libro è già prenotato dall'utente */
                       <Button
@@ -246,15 +233,15 @@ return (
                       </Button>
                     )}
                   </Box>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
 
-    </Container>
-  </Box>
-);
+      </Container>
+    </Box>
+  );
 }
 
 export default Catalogo;

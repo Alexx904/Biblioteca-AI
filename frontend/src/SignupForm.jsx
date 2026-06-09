@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { 
-  Box, Tabs, Tab, TextField, Button, Typography, 
-  InputAdornment, IconButton, Alert 
+import {
+  Box, Tabs, Tab, TextField, Button, Typography,
+  InputAdornment, IconButton, Alert
 } from "@mui/material";
 import { Visibility, VisibilityOff, AccountCircle } from "@mui/icons-material";
 
@@ -27,11 +27,12 @@ export default function SignupForm({ onLoginSuccess }) {
       const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",          // Riceve i cookie httpOnly dal backend
         body: JSON.stringify({ email, password })
       });
       const risultato = await response.json();
       if (response.status === 200) {
-        localStorage.setItem("token", risultato.token);
+        // Il token è ora in un cookie httpOnly 
         window.dispatchEvent(new Event("loginEffettuato"));
         onLoginSuccess(risultato.utente);
       } else {
@@ -48,6 +49,7 @@ export default function SignupForm({ onLoginSuccess }) {
       const response = await fetch("http://localhost:3000/api/auth/registrazione", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ nome, matricola, facolta, email, password })
       });
       const risultato = await response.json();
