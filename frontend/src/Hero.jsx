@@ -66,7 +66,7 @@ function Hero() {
                 startIcon={<BookmarksIcon />}
                 color="primary"
                 size='large'
-                sx={{ fontWeight: 'bold', flex: 1, minWidth: 255, '&:hover': { color: 'secondary.light' } }}> {/* flex:1 e minWidth insieme permettono ai bottoni di espandersi in modo uniforme e di andare a capo se lo schermo è troppo stretto*/}
+                sx={{ fontWeight: 'bold', flex: 1, minWidth: 255, '&:hover': { color: 'secondary.accent' } }}> {/* flex:1 e minWidth insieme permettono ai bottoni di espandersi in modo uniforme e di andare a capo se lo schermo è troppo stretto*/}
                 Esplora il Catalogo
               </Button>
               <Button

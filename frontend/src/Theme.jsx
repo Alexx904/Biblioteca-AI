@@ -12,6 +12,7 @@ export const lightTheme = createTheme({
             main: '#0284C7',
             light: '#38BDF8',
             contrastText: '#fff',
+            accent: '#38BDF8',
         },
         background: {
             default: '#F8FAFC',
@@ -26,6 +27,22 @@ export const lightTheme = createTheme({
             dark: '#142A4D',           
             contrastText: '#ffffff',            
         },
+        bookcard:{
+            border:'#f0e2e2',
+            borderHover:'#cbd5e1',
+        },
+        warning:{
+            main:'#ea580c',            
+            disabled:'#94a3b8'
+        },
+         success:{
+            main:'#10b981'
+        },
+         error:{
+            main:'#ef4444',
+            dark:'#991b1b',
+            light:'#fca5a5'
+        },
     },
 });
 
@@ -39,8 +56,9 @@ export const darkTheme = createTheme({
         },
         secondary: {
             main: '#38BDF8',
-            light: '#0F172A',
+            light: '#6ecef8',
             contrastText: '#0F172A',
+            accent: '#0F172A',
         },
         background: {
             default: '#0F172A',
@@ -55,6 +73,22 @@ export const darkTheme = createTheme({
             main: '#0A1E3F',
             dark: '#081935',           
             contrastText: '#F8FAFC',            
+        },
+        bookcard:{
+            border:'#0c1323',
+            borderHover:'#05080f',
+        },
+        warning:{
+            main:'#ea580c',            
+            disabled:'#94a3b8'
+        },
+         success:{
+            main:'#10b981'
+        },
+         error:{
+            main:'#ef4444',
+            dark:'#991b1b',
+            light:'#fca5a5'
         },
     },
 });
