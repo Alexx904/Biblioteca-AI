@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness3Icon from "@mui/icons-material/Brightness3";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { useThemeContext } from "./ThemeContext";
 import apiFetch from "./api";
@@ -118,7 +118,7 @@ function Impostazioni({ open, onClose }) {
     return (
         <Dialog open={open} onClose={handleChiudi} maxWidth="sm" fullWidth>
             {/* Intestazione */}
-            <DialogTitle sx={{ bgcolor: "primary.main", color: "white", fontWeight: "bold", pb: 1 }}>
+            <DialogTitle sx={{ bgcolor: "navbar.main", color: "navbar.contrastText", fontWeight: "bold", pb: 1 }}>
                 Impostazioni
             </DialogTitle>
 
@@ -146,12 +146,12 @@ function Impostazioni({ open, onClose }) {
                                 {/* Avatar + nome + ruolo */}
                                 {profilo && (
                                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                                        <Avatar sx={{ width: 56, height: 56, bgcolor: "primary.main", fontSize: 24 }}>
+                                        <Avatar sx={{ width: 56, height: 56, bgcolor: "secondary.main", fontSize: 24 }}>
                                             {profilo.nome.charAt(0).toUpperCase()}
                                         </Avatar>
                                         <Box>
                                             <Typography variant="h6" fontWeight="bold">{profilo.nome}</Typography>
-                                            <Typography variant="body2" color="text.secondary" sx={{ textTransform: "capitalize" }}>
+                                            <Typography variant="body2" sx={{color:'text.secondary', textTransform: "capitalize" }}>
                                                 {profilo.ruolo}
                                             </Typography>
                                         </Box>
@@ -164,8 +164,8 @@ function Impostazioni({ open, onClose }) {
                                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                     <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                                         {isDark
-                                            ? <Brightness7Icon color="primary" />
-                                            : <Brightness4Icon color="primary" />
+                                            ? <Brightness3Icon color="primary" />
+                                            : <Brightness7Icon color="primary" />
                                         }
                                         <Typography>
                                             Modalità {isDark ? "Scura" : "Chiara"}
@@ -181,7 +181,7 @@ function Impostazioni({ open, onClose }) {
                                 <Divider />
 
                                 {/* Campi modifica account */}
-                                <Typography variant="subtitle2" color="text.secondary">
+                                <Typography variant="subtitle2" sx={{color:'text.primary'}}>
                                     Modifica i tuoi dati
                                 </Typography>
 
@@ -217,7 +217,7 @@ function Impostazioni({ open, onClose }) {
                         {/* ── TAB SICUREZZA ─────────────────────────────────── */}
                         {tab === 1 && (
                             <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
-                                <Typography variant="subtitle1" fontWeight="bold">
+                                <Typography variant="h5" fontWeight="bold">
                                     Cambia Password
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
