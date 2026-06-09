@@ -42,7 +42,7 @@ function Chat() {
           <Button
             variant="contained"
             size="large"
-            onClick={() => window.dispatchEvent(new Event("apriChat"))} 
+            onClick={() => window.dispatchEvent(new Event("apriChat"))} // <-- AGGIUNGI QUESTO
             sx={{
               bgcolor: '#DCA743',
               color: '#1a2e46',
