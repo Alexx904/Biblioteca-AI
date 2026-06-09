@@ -32,12 +32,12 @@ app.use(express.json()); //ricezione di json da parte del server
 app.use(cookieParser());
 
 // PER VERCEL e Swagger UI
-const swaggerPath = path.join(process.cwd(), 'swagger.yaml');
-const swaggerFile = fs.readFileSync(swaggerPath, 'utf8');
+// const swaggerPath = path.join(process.cwd(), 'swagger.yaml');
+// const swaggerFile = fs.readFileSync(swaggerPath, 'utf8');
 
 // Usa direttamente la variabile swaggerFile
-const swaggerDocument = parse(swaggerFile);
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// const swaggerDocument = parse(swaggerFile);
+// app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(cors({ //premette comunicazione
     origin: process.env.FRONTEND_URL || "http://localhost:5173", // L'URL esatto del tuo frontend React
