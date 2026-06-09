@@ -26,6 +26,20 @@ export const lightTheme = createTheme({
             dark: '#142A4D',           
             contrastText: '#ffffff',            
         },
+        bookcard:{
+            border:'#f0e2e2',
+            borderHover:'#cbd5e1',
+        },
+        warning:{
+            main:'#ea580c',            
+            disabled:'#94a3b8'
+        },
+         success:{
+            main:'#10b981'
+        },
+         error:{
+            main:'#f59e0b'
+        },
     },
 });
 

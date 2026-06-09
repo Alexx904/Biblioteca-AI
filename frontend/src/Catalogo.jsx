@@ -207,20 +207,21 @@ function Catalogo() {
                     display: 'flex', 
                     flexDirection: 'column',
                     borderRadius: 4, // Angoli più morbidi come nel mock
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid',
+                    borderColor:'bookcard.border',
                     overflow: 'hidden',
                     transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease',
                     '&:hover': {
                       transform: 'translateY(-6px)', // Effetto sollevamento fluido
                       boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 10px 10px -5px rgba(0, 0, 0, 0.03)',
-                      borderColor: '#cbd5e1'
+                      borderColor: 'bookcard.borderHover'
                     }
                   }}
                 >
                   {/* Intestazione Card: Simula una copertina premium stilizzata */}
                   <Box sx={{ 
                     height: 120, 
-                    background: 'linear-gradient(135deg, #1a2e46 0%, #3b597e 100%)', // Gradiente abbinato al tuo blu scuro
+                    background: 'linear-gradient(135deg, #1a2e46 0%, #3b597e 100%)', 
                     display: 'flex', 
                     flexDirection: 'column', 
                     justifyContent: 'space-between', 
@@ -257,7 +258,7 @@ function Catalogo() {
                     />
 
                     {/* Ubicazione fisica */}
-                    <Typography variant="caption" sx={{ opacity: 0.85, fontWeight: 600, alignSelf: 'flex-end', letterSpacing: 0.5 }}>
+                    <Typography variant="caption" sx={{color:'white', fontWeight: 600, alignSelf: 'flex-end', letterSpacing: 0.5 }}>
                       SCAFFALE {libro.scaffale}
                     </Typography>
                   </Box>
@@ -266,12 +267,12 @@ function Catalogo() {
                   <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 3, pt: 2.5 }}>
                     
                     {/* Titolo */}
-                    <Typography variant="h6" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5, lineHeight: 1.3, fontSize: '1.05rem' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 800, color: 'text.primary', mb: 0.5, lineHeight: 1.3, fontSize: '1.05rem' }}>
                       {libro.titolo}
                     </Typography>
 
                     {/* Autore */}
-                    <Typography variant="body2" sx={{ color: '#64748b', mb: 3, fontWeight: 500 }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3, fontWeight: 500 }}>
                       di {libro.autore}
                     </Typography>
 
@@ -283,24 +284,25 @@ function Catalogo() {
                       display: 'flex', 
                       alignItems: 'center', 
                       justifyContent: 'space-between', 
-                      bgcolor: '#f8fafc', 
+                      bgcolor: 'background.default', 
                       p: 1.5, 
                       borderRadius: 2.5, 
-                      border: '1px solid #f1f5f9' 
+                      border: '1px solid',
+                      borderColor:'bookcard.border' 
                     }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Box sx={{ 
                           width: 8, 
                           height: 8, 
                           borderRadius: '50%', 
-                          bgcolor: giaPrenotato ? '#f59e0b' : (isDisponibile ? '#10b981' : '#94a3b8')
+                          bgcolor: giaPrenotato ? 'warning.main' : (isDisponibile ? 'success.main' : 'warning.disabled')
                         }} />
-                        <Typography variant="caption" fontWeight="bold" sx={{ color: '#334155' }}>
+                        <Typography variant="caption" fontWeight="bold" sx={{ color: 'text.secondary' }}>
                           {giaPrenotato ? 'In tuo possesso' : (isDisponibile ? 'Disponibile' : 'Esaurito')}
                         </Typography>
                       </Box>
                       
-                      <Typography variant="caption" fontWeight="bold" sx={{ color: '#64748b' }}>
+                      <Typography variant="caption" fontWeight="bold" sx={{ color: 'text.secondary' }}>
                         {libro.copieDisponibili} / {libro.copieTotali} Copie
                       </Typography>
                     </Box>
@@ -317,9 +319,8 @@ function Catalogo() {
                           textTransform: 'none', 
                           fontWeight: 700, 
                           borderRadius: 2.5, 
-                          bgcolor: '#ea580c',
-                          boxShadow: '0 4px 6px -1px rgba(234, 88, 12, 0.15)',
-                          '&:hover': { bgcolor: '#c2410c', boxShadow: 'none' }
+                          bgcolor: 'warning.main',                          
+                          '&:hover': { bgcolor: 'warning.dark', boxShadow: 'none' }
                         }}
                       >
                         Restituisci libro
@@ -331,12 +332,11 @@ function Catalogo() {
                         disabled={!isDisponibile}
                         onClick={() => handlePrenotaLibro(libro._id)}
                         sx={{ 
-                          bgcolor: '#1a2e46', // Coerente con la palette dell'aula
+                          bgcolor: 'secondary.main',
                           textTransform: 'none', 
                           fontWeight: 700, 
-                          borderRadius: 2.5,
-                          boxShadow: isDisponibile ? '0 4px 6px -1px rgba(26, 46, 70, 0.15)' : 'none',
-                          '&:hover': { bgcolor: '#111e2e', boxShadow: 'none' }
+                          borderRadius: 2.5,                          
+                          '&:hover': { bgcolor: 'secondary.dark', boxShadow: 'none' }
                         }}
                       >
                         {isDisponibile ? 'Richiedi in prestito' : 'Non disponibile'}
