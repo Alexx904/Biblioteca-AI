@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Box, Typography, Grid, Paper, Tooltip, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import { Box, Typography, Grid, Paper, Tooltip, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Snackbar, Alert } from '@mui/material';
 import EventSeatIcon from '@mui/icons-material/EventSeat';
 import { io } from "socket.io-client"; // npm install socket.io-client --legacy-peer-deps
 import apiFetch from './api';
@@ -15,6 +15,14 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
   const [dataPrenotazione, setDataPrenotazione] = useState('');
   const [oraPrenotazione, setOraPrenotazione] = useState('');
   const [durata, setDurata] = useState(1);
+
+  const [notifica, setNotifica] = useState({ open: false, messaggio: '', tipo: 'info' });
+
+  // Funzione per chiudere la notifica
+  const handleCloseNotifica = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setNotifica({ ...notifica, open: false });
+  };
 
   // Traccia stato login tramite eventi 
   const [isLoggato, setIsLoggato] = useState(false);
@@ -53,7 +61,8 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
       if (dataFiltro) params.append('data', dataFiltro);
       if (oraFiltro) params.append('ora', oraFiltro);
 
-      const res = await fetch(`http://localhost:3000/api/postazioni/${aulaSelezionata}?${params}`, {
+      const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000"; 
+      const res = await fetch(`${baseUrl}/api/postazioni/${aulaSelezionata}?${params}`, {
         credentials: "include"
       });
       if (res.ok) {
@@ -66,7 +75,8 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
   }, [aulaSelezionata, dataFiltro, oraFiltro]);
 
   useEffect(() => {
-    socketRef.current = io("http://localhost:3000", { withCredentials: true });
+    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+    socketRef.current = io(baseUrl, { withCredentials: true });
     return () => { socketRef.current.disconnect(); };
   }, []);
 
@@ -96,7 +106,7 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
 
   const handleSeleziona = (postazione) => {
     if (!isLoggato) {
-      alert("Devi effettuare il login per prenotare una postazione!");
+      setNotifica({ open: true, messaggio: "Devi effettuare il login per prenotare!", tipo: "error" });
       return;
     }
     if (postazione.stato === "occupata") return;
@@ -109,7 +119,7 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
   };
 
   const confermaPrenotazione = async () => {
-    if (!dataPrenotazione || !oraPrenotazione) return alert("Inserisci data e ora!");
+    if (!dataPrenotazione || !oraPrenotazione) return setNotifica({ open: true, messaggio: "Inserisci data e ora!", tipo: "warning" });
 
     try {
       const res = await apiFetch(`/api/postazioni/${postoDaPrenotare.id_posto}/prenota`, {
@@ -118,15 +128,14 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
       });
 
       if (res.ok) {
-        alert("Posto prenotato!");
+        setNotifica({ open: true, messaggio: "Posto prenotato con successo!", tipo: "success" });
         setPostazioni(prev =>
           prev.map(p => p.id_posto === postoDaPrenotare.id_posto ? { ...p, stato: "occupata" } : p)
         );
         setOpenPopup(false);
-      } else if (res.status === 401) {
-        alert("Sessione scaduta. Effettua nuovamente il login.");
       } else {
-        alert((await res.json()).messaggio);
+        const data = await res.json();
+        setNotifica({ open: true, messaggio: data.messaggio, tipo: "error" });
       }
     } catch (err) { console.error(err); }
   };
@@ -204,6 +213,16 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
           <Button onClick={confermaPrenotazione} variant="contained">Conferma</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={notifica.open}
+        autoHideDuration={4000}
+        onClose={handleCloseNotifica}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseNotifica} severity={notifica.tipo} sx={{ width: '100%' }}>
+          {notifica.messaggio}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

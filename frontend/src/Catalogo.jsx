@@ -1,7 +1,7 @@
 import {
   Box, Container, Typography, Paper, InputBase,
   FormControlLabel, Checkbox, Button, Grid,
-  Card, CardContent, Chip
+  Card, CardContent, Chip, Snackbar, Alert
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import React from 'react';
@@ -35,10 +35,18 @@ function Catalogo() {
   const [libri, setLibri] = useState([]);
   const [libriPrenotatiIds, setLibriPrenotatiIds] = useState([]);
 
+  const [notifica, setNotifica] = useState({ open: false, messaggio: '', tipo: 'info' });
+
+  const handleCloseNotifica = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setNotifica({ ...notifica, open: false });
+  };
+
   // Carica libri dal backend
   const fetchLibri = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/libri", { credentials: "include" });
+      const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+      const res = await fetch(`${baseUrl}/api/libri`, { credentials: "include" });
       if (res.ok) setLibri(await res.json());
     } catch (err) {
       console.error("Errore caricamento libri:", err);
@@ -68,13 +76,16 @@ function Catalogo() {
     fetchLibriPrenotati();
 
     const aggiorna = () => { fetchLibri(); fetchLibriPrenotati(); };
+    const azzeraPrenotazioni = () => setLibriPrenotatiIds([]); 
+
     window.addEventListener("aggiornaDati", aggiorna);
     window.addEventListener("loginEffettuato", fetchLibriPrenotati);
-    window.addEventListener("sessioneScaduta", () => setLibriPrenotatiIds([]));
+    window.addEventListener("sessioneScaduta", azzeraPrenotazioni); 
 
     return () => {
       window.removeEventListener("aggiornaDati", aggiorna);
-      window.removeEventListener("loginEffettuato", fetchLibriPrenotati); // ✅
+      window.removeEventListener("loginEffettuato", fetchLibriPrenotati);
+      window.removeEventListener("sessioneScaduta", azzeraPrenotazioni); 
     };
   }, []);
 
@@ -84,17 +95,17 @@ function Catalogo() {
     try {
       const res = await apiFetch(`/api/libri/${idLibro}/prenota`, { method: "POST" });
       if (res.ok) {
-        alert("Libro prenotato con successo! Lo troverai in 'Le mie prenotazioni'.");
+        setNotifica({ open: true, messaggio: "Libro prenotato! Lo troverai in 'Le mie prenotazioni'.", tipo: "success" });
         setLibriPrenotatiIds(prev => [...prev, idLibro]);
         setLibri(prev => prev.map(l =>
           l._id === idLibro ? { ...l, copieDisponibili: l.copieDisponibili - 1 } : l
         ));
         window.dispatchEvent(new Event("aggiornaDati"));
       } else if (res.status === 401) {
-        alert("Devi effettuare il login per poter prenotare un libro!");
+        setNotifica({ open: true, messaggio: "Devi effettuare il login per poter prenotare un libro!", tipo: "error" });
       } else {
         const data = await res.json();
-        alert("Errore: " + data.messaggio);
+        setNotifica({ open: true, messaggio: "Errore: " + data.messaggio, tipo: "error" });
       }
     } catch (err) { console.error(err); }
   };
@@ -104,7 +115,7 @@ function Catalogo() {
     try {
       const res = await apiFetch(`/api/libri/${idLibro}/restituisci`, { method: "POST" });
       if (res.ok) {
-        alert("Libro restituito con successo!");
+        setNotifica({ open: true, messaggio: "Libro restituito con successo!", tipo: "success" });
         setLibriPrenotatiIds(prev => prev.filter(id => id !== idLibro));
         setLibri(prev => prev.map(l =>
           l._id === idLibro ? { ...l, copieDisponibili: l.copieDisponibili + 1 } : l
@@ -112,7 +123,7 @@ function Catalogo() {
         window.dispatchEvent(new Event("aggiornaDati"));
       } else {
         const data = await res.json();
-        alert("Errore: " + data.messaggio);
+        setNotifica({ open: true, messaggio: "Errore: " + data.messaggio, tipo: "error" });
       }
     } catch (err) { console.error(err); }
   };
@@ -238,6 +249,17 @@ function Catalogo() {
             );
           })}
         </Grid>
+
+        <Snackbar 
+          open={notifica.open} 
+          autoHideDuration={4000} 
+          onClose={handleCloseNotifica}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert onClose={handleCloseNotifica} severity={notifica.tipo} sx={{ width: '100%' }}>
+            {notifica.messaggio}
+          </Alert>
+        </Snackbar>
 
       </Container>
     </Box>

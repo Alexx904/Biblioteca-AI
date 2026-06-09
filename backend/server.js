@@ -24,7 +24,7 @@ app.use(express.json()); //ricezione di json da parte del server
 app.use(cookieParser());
 
 app.use(cors({ //premette comunicazione
-    origin: "http://localhost:5173", // L'URL esatto del tuo frontend React
+    origin: process.env.FRONTEND_URL || "http://localhost:5173", // L'URL esatto del tuo frontend React
     credentials: true                // FONDAMENTALE: permette l'uso dei cookie
 }));
 
@@ -43,7 +43,7 @@ const httpServer = http.createServer(app);
 
 const io = new Server(httpServer,{
     cors:{
-        origin: "http://localhost:5173",
+        origin: process.env.FRONTEND_URL || "http://localhost:5173",
         methods: ["GET", "POST"],
         credentials: true
     }

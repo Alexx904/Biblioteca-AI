@@ -24,7 +24,8 @@ export default function SignupForm({ onLoginSuccess }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
+      // Dopo (dentro handleLogin):
+      const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",          // Riceve i cookie httpOnly dal backend
@@ -46,7 +47,8 @@ export default function SignupForm({ onLoginSuccess }) {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/api/auth/registrazione", {
+      // Dopo (dentro handleLogin):
+      const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

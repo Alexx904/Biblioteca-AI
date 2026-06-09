@@ -14,7 +14,8 @@ avvisa l'app quando anche il refresh token non è più valido
 
 */
 
-const BASE_URL = "http://localhost:3000"; //url backend
+// Dopo:
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"; //url backend
 
 async function apiFetch(percorso, opzioni = {}) { //serve per evitare di scrivere ogni volta l'indirizzo completo
     //percorso -> endpoint da chiamare, opzioni-> configurazione della fetch
