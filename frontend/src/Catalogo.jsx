@@ -196,51 +196,150 @@ function Catalogo() {
         <Grid container spacing={3}>
           {libriFiltrati.map(libro => {
             const giaPrenotato = libriPrenotatiIds.includes(libro._id.toString());
+            const isDisponibile = libro.copieDisponibili > 0;
+
             return (
               <Grid key={libro._id} size={{ xs: 12, sm: 6, md: 4 }}>
-                <Card elevation={2} sx={{ borderTop: '4px solid #16a34a', height: '100%', display: 'flex', flexDirection: 'column' }}>
-                  <CardContent sx={{ flexGrow: 1, pt: 3 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
-                      {/* ... Icona, Titolo, Autore, Descrizione ... */}
-                      <Box>
-                        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{libro.titolo}</Typography>
-                        <Typography variant="body2">{libro.autore}</Typography>
-                      </Box>
-                    </Box>
+                <Card 
+                  elevation={0} 
+                  sx={{ 
+                    height: '100%', 
+                    display: 'flex', 
+                    flexDirection: 'column',
+                    borderRadius: 4, // Angoli più morbidi come nel mock
+                    border: '1px solid #e2e8f0',
+                    overflow: 'hidden',
+                    transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-6px)', // Effetto sollevamento fluido
+                      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 10px 10px -5px rgba(0, 0, 0, 0.03)',
+                      borderColor: '#cbd5e1'
+                    }
+                  }}
+                >
+                  {/* Intestazione Card: Simula una copertina premium stilizzata */}
+                  <Box sx={{ 
+                    height: 120, 
+                    background: 'linear-gradient(135deg, #1a2e46 0%, #3b597e 100%)', // Gradiente abbinato al tuo blu scuro
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    justifyContent: 'space-between', 
+                    p: 2.5, 
+                    position: 'relative',
+                    color: 'white'
+                  }}>
+                    {/* Elemento geometrico decorativo di sfondo */}
+                    <Box sx={{
+                      position: 'absolute',
+                      right: -15,
+                      bottom: -15,
+                      width: 80,
+                      height: 80,
+                      borderRadius: '50%',
+                      background: 'rgba(255, 255, 255, 0.07)'
+                    }} />
 
-                    {/* Copie: Mostriamo dinamicamente Disponibili/Totali */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 2 }}>
-                      <Chip
-                        label={`✓ ${libro.copieDisponibili}/${libro.copieTotali} COPIE`}
-                        size="small"
-                        sx={{ backgroundColor: '#d1fae5', color: '#065f46', fontWeight: 'bold' }}
-                      />
-                      <Typography variant="caption">Scaffale {libro.scaffale}</Typography>
+                    {/* Badge della categoria in alto a sinistra */}
+                    <Chip 
+                      label={libro.categoria || 'Generale'} 
+                      size="small" 
+                      sx={{ 
+                        alignSelf: 'flex-start', 
+                        bgcolor: 'rgba(255, 255, 255, 0.18)', 
+                        color: 'white', 
+                        fontWeight: 700, 
+                        fontSize: '0.65rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: 1,
+                        backdropFilter: 'blur(4px)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                      }} 
+                    />
+
+                    {/* Ubicazione fisica */}
+                    <Typography variant="caption" sx={{ opacity: 0.85, fontWeight: 600, alignSelf: 'flex-end', letterSpacing: 0.5 }}>
+                      SCAFFALE {libro.scaffale}
+                    </Typography>
+                  </Box>
+
+                  {/* Corpo principale della Card */}
+                  <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 3, pt: 2.5 }}>
+                    
+                    {/* Titolo */}
+                    <Typography variant="h6" sx={{ fontWeight: 800, color: '#0f172a', mb: 0.5, lineHeight: 1.3, fontSize: '1.05rem' }}>
+                      {libro.titolo}
+                    </Typography>
+
+                    {/* Autore */}
+                    <Typography variant="body2" sx={{ color: '#64748b', mb: 3, fontWeight: 500 }}>
+                      di {libro.autore}
+                    </Typography>
+
+                    {/* Spinge i dettagli informativi fissi verso il fondo */}
+                    <Box sx={{ mt: 'auto' }} />
+
+                    {/* Contenitore interno per lo Stato delle Copie */}
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between', 
+                      bgcolor: '#f8fafc', 
+                      p: 1.5, 
+                      borderRadius: 2.5, 
+                      border: '1px solid #f1f5f9' 
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Box sx={{ 
+                          width: 8, 
+                          height: 8, 
+                          borderRadius: '50%', 
+                          bgcolor: giaPrenotato ? '#f59e0b' : (isDisponibile ? '#10b981' : '#94a3b8')
+                        }} />
+                        <Typography variant="caption" fontWeight="bold" sx={{ color: '#334155' }}>
+                          {giaPrenotato ? 'In tuo possesso' : (isDisponibile ? 'Disponibile' : 'Esaurito')}
+                        </Typography>
+                      </Box>
+                      
+                      <Typography variant="caption" fontWeight="bold" sx={{ color: '#64748b' }}>
+                        {libro.copieDisponibili} / {libro.copieTotali} Copie
+                      </Typography>
                     </Box>
                   </CardContent>
 
-                  <Box sx={{ px: 2, pb: 2 }}>
+                  {/* Sezione Pulsante Azione */}
+                  <Box sx={{ px: 3, pb: 3, pt: 0 }}>
                     {giaPrenotato ? (
-                      /* Pulsante RESTITUISCI — se il libro è già prenotato dall'utente */
                       <Button
                         fullWidth
-                        variant="outlined"
-                        color="warning"
+                        variant="contained"
                         onClick={() => handleRestituisciLibro(libro._id)}
-                        sx={{ textTransform: 'none', fontWeight: 600 }}
+                        sx={{ 
+                          textTransform: 'none', 
+                          fontWeight: 700, 
+                          borderRadius: 2.5, 
+                          bgcolor: '#ea580c',
+                          boxShadow: '0 4px 6px -1px rgba(234, 88, 12, 0.15)',
+                          '&:hover': { bgcolor: '#c2410c', boxShadow: 'none' }
+                        }}
                       >
                         Restituisci libro
                       </Button>
                     ) : (
-                      /* Pulsante PRENOTA — se non è prenotato */
                       <Button
                         fullWidth
                         variant="contained"
-                        disabled={libro.copieDisponibili === 0}
+                        disabled={!isDisponibile}
                         onClick={() => handlePrenotaLibro(libro._id)}
-                        sx={{ backgroundColor: '#1a2e46', textTransform: 'none', fontWeight: 600 }}
+                        sx={{ 
+                          bgcolor: '#1a2e46', // Coerente con la palette dell'aula
+                          textTransform: 'none', 
+                          fontWeight: 700, 
+                          borderRadius: 2.5,
+                          boxShadow: isDisponibile ? '0 4px 6px -1px rgba(26, 46, 70, 0.15)' : 'none',
+                          '&:hover': { bgcolor: '#111e2e', boxShadow: 'none' }
+                        }}
                       >
-                        {libro.copieDisponibili > 0 ? 'Prenota' : 'Non disponibile'}
+                        {isDisponibile ? 'Richiedi in prestito' : 'Non disponibile'}
                       </Button>
                     )}
                   </Box>

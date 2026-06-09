@@ -8,6 +8,9 @@ import http from "http";
 import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
 
+import Libro from "./models/Libro.js";
+import Postazione from "./models/Postazione.js";
+
 //caricamento delle variabili d'ambiente
 dotenv.config();
 
@@ -40,6 +43,22 @@ app.use("/api/health", health);
 app.use("/api/chat", chat);
 
 const httpServer = http.createServer(app);
+
+app.get("/api/stats", async (req, res) => {
+    try {
+        // Conta quanti libri e quante postazioni totali esistono nel DB
+        const totalLibri = await Libro.countDocuments();
+        const totalPostazioni = await Postazione.countDocuments();
+
+        res.json({
+            libri: totalLibri,
+            postazioni: totalPostazioni,
+            orari: "8:00 - 20:00" // Questo può rimanere fisso o essere reso dinamico in futuro
+        });
+    } catch (err) {
+        res.status(500).json({ messaggio: "Errore nel calcolo delle statistiche", errore: err.message });
+    }
+});
 
 const io = new Server(httpServer,{
     cors:{

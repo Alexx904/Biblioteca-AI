@@ -57,7 +57,7 @@ function Informazioni() {
                             <PhoneIcon sx={{ fontSize: 40, color: '#e91e63', mb: 2 }} />
                             <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2e46', mb: 2 }}>Telefono</Typography>
                             <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8 }}>
-                                +39 080 996 21<br />info@novalibrary.it
+                                +39 xxx xxxxxxx<br />info@novalibrary.it
                             </Typography>
                         </Paper>
                     </Grid>
@@ -68,7 +68,7 @@ function Informazioni() {
                             <LanguageIcon sx={{ fontSize: 40, color: '#38BDF8', mb: 2 }} />
                             <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2e46', mb: 2 }}>Servizi</Typography>
                             <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8 }}>
-                                30 postazioni studio<br />12.000+ volumi<br />Wi-Fi gratuito
+                                2 Aule studio<br />Numerosi volumi<br />Wi-Fi gratuito
                             </Typography>
                         </Paper>
                     </Grid>

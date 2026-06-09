@@ -29,6 +29,11 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
 
   const socketRef = useRef(null);
 
+  const chiudiPopup = () => {
+    setOpenPopup(false);
+    setPostoDaPrenotare(null);
+  };
+
   //controllo login
   useEffect(() => {
     const verificaLogin = async () => {
@@ -61,7 +66,7 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
       if (dataFiltro) params.append('data', dataFiltro);
       if (oraFiltro) params.append('ora', oraFiltro);
 
-      const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000"; 
+      const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
       const res = await fetch(`${baseUrl}/api/postazioni/${aulaSelezionata}?${params}`, {
         credentials: "include"
       });
@@ -86,7 +91,7 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
 
     const handleAggiornamento = ({ id_posto, stato }) => {
       setPostazioni(prev =>
-        prev.map(p => p.id_posto === id_posto ? { ...p, stato } : p)
+        prev.map(p => String(p.id_posto) === String(id_posto) ? { ...p, stato } : p)
       );
     };
 
@@ -132,7 +137,7 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
         setPostazioni(prev =>
           prev.map(p => p.id_posto === postoDaPrenotare.id_posto ? { ...p, stato: "occupata" } : p)
         );
-        setOpenPopup(false);
+        chiudiPopup();
       } else {
         const data = await res.json();
         setNotifica({ open: true, messaggio: data.messaggio, tipo: "error" });
@@ -141,10 +146,58 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
   };
 
   const getBgColor = (postazione) => {
-    if (postazione.stato === 'occupata') return '#fca5a5'; // Rosso
-    if (selezionata === postazione.id_posto) return '#bfdbfe'; // Blu
-    return '#bbf7d0'; // Verde
+    if (postazione.stato === 'occupata') return '#fca5a5';
+    if (postoDaPrenotare?.id_posto === postazione.id_posto) return '#bfdbfe';
+    return '#bbf7d0';
   };
+
+  // Funzione che divide l'array di postazioni in "blocchi" da 4
+  const raggruppaPerTavoli = (postazioni, postiPerTavolo = 4) => {
+    const tavoli = [];
+    for (let i = 0; i < postazioni.length; i += postiPerTavolo) {
+      tavoli.push(postazioni.slice(i, i + postiPerTavolo));
+    }
+    return tavoli;
+  };
+
+  const tavoli = raggruppaPerTavoli(postazioni, 4);
+
+  const renderSedia = (postazione, isTopRow) => (
+    <Tooltip key={postazione.id_posto} title={`Posto ${postazione.id_posto} - ${postazione.stato.toUpperCase()}`} arrow>
+      <Paper
+        onClick={() => handleSeleziona(postazione)}
+        elevation={postoDaPrenotare?.id_posto === postazione.id_posto ? 6 : 2}
+        sx={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          cursor: postazione.stato === 'occupata' ? 'not-allowed' : 'pointer',
+          bgcolor: getBgColor(postazione),
+          // Forma della sedia: arrotondata fuori, piatta contro il tavolo!
+          borderRadius: isTopRow ? '50% 50% 15% 15%' : '15% 15% 50% 50%',
+          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+          width: 48, height: 48, // Un po' più proporzionate
+          border: '2px solid',
+          borderColor: postazione.stato === 'occupata' ? '#ef4444' : (postoDaPrenotare?.id_posto === postazione.id_posto ? '#3b82f6' : '#22c55e'),
+          zIndex: 1, // Le sedie stanno "sotto" al livello del tavolo
+          '&:hover': {
+            transform: 'scale(1.1)',
+            filter: 'brightness(0.95)',
+            zIndex: 10
+          }
+        }}
+      >
+        <EventSeatIcon sx={{
+          color: postazione.stato === 'occupata' ? '#991b1b' : '#166534',
+          fontSize: 20,
+          transform: isTopRow ? 'none' : 'rotate(180deg)',
+          mb: 0.5
+        }} />
+        {/* Il testo ora è sempre dritto senza bisogno di calcoli extra */}
+        <Typography variant="caption" fontWeight="bold" sx={{ fontSize: '0.7rem', lineHeight: 1 }}>
+          {postazione.id_posto}
+        </Typography>
+      </Paper>
+    </Tooltip>
+  );
 
 
   return (
@@ -174,32 +227,55 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
       </Box>
 
       {/* Lavagna per orientamento */}
-      <Box sx={{ width: '60%', height: 10, bgcolor: 'grey.400', margin: '0 auto 20px', borderRadius: 1 }} />
-      <Typography variant="caption" display="block" align="center" sx={{ mb: 3 }} color="text.secondary">
-        Cattedra / Lavagna
-      </Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', mb: 5 }}>
+        <Box sx={{ width: '50%', maxWidth: 400, height: 12, bgcolor: '#cbd5e1', borderRadius: 2, mb: 1, boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)' }} />
+        <Typography variant="caption" color="text.secondary" fontWeight="bold" letterSpacing={2}>
+          CATTEDRA / LAVAGNA
+        </Typography>
+      </Box>
 
-      <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
-        {postazioni.map((postazione) => (
-          <Grid item xs={3} sm={2} md={1.5} key={postazione.id_posto}>
-            <Tooltip title={`Posto ${postazione.id_posto} - ${postazione.stato.toUpperCase()}`} arrow>
-              <Paper
-                onClick={() => handleSeleziona(postazione)}
-                sx={{
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', p: 1,
-                  cursor: postazione.stato === 'occupata' ? 'not-allowed' : 'pointer',
-                  bgcolor: getBgColor(postazione), // <--- COLORE DI SFONDO APPLICATO QUI
-                  borderRadius: 2, transition: '0.2s',
-                  '&:hover': { opacity: 0.8 }
-                }}
-              >
-                <EventSeatIcon sx={{ color: postazione.stato === 'occupata' ? '#dc2626' : '#166534', fontSize: 28 }} />
-                <Typography variant="caption" fontWeight="bold">{postazione.id_posto}</Typography>
-              </Paper>
-            </Tooltip>
-          </Grid>
+      {/* MAPPA FISICA DEI TAVOLI */}
+      <Box sx={{ 
+          display: 'flex', 
+          flexWrap: 'wrap', 
+          gap: 6, // Spazio tra un gruppo-tavolo e l'altro
+          justifyContent: 'center', 
+          p: 2 
+      }}>
+        {tavoli.map((tavolo, indexTavolo) => (
+          <Box key={`tavolo-${indexTavolo}`} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+
+            {/* Fila di sedie Superiori */}
+            <Box sx={{ display: 'flex', gap: 3, mb: -1.5, zIndex: 1 }}>
+              {tavolo.slice(0, 2).map(postazione => renderSedia(postazione, true))}
+            </Box>
+
+            {/* Grafica del Tavolo Centrale */}
+            <Paper elevation={3} sx={{ 
+                width: 140, 
+                height: 70, 
+                bgcolor: '#f8fafc', // Colore chiaro scrivania
+                backgroundImage: 'linear-gradient(to bottom right, #ffffff, #e2e8f0)', // Leggero effetto 3D
+                borderRadius: 2, 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                border: '1px solid #cbd5e1',
+                zIndex: 0.75// Il tavolo copre leggermente i bordi delle sedie (effetto realistico)
+            }}>
+              <Typography variant="caption" color="text.secondary" fontWeight="bold" sx={{ letterSpacing: 1, opacity: 0.6 }}>
+                TAVOLO {indexTavolo + 1}
+              </Typography>
+            </Paper>
+
+            {/* Fila di sedie Inferiori */}
+            <Box sx={{ display: 'flex', gap: 3, mt: -1.5, zIndex: 1 }}>
+              {tavolo.slice(2, 4).map(postazione => renderSedia(postazione, false))}
+            </Box>
+
+          </Box>
         ))}
-      </Grid>
+      </Box>
       {/* --- COMPONENTE POPUP (DIALOG) --- */}
       <Dialog open={openPopup} onClose={() => setOpenPopup(false)}>
         <DialogTitle>Prenota il posto {postoDaPrenotare?.id_posto}</DialogTitle>
@@ -209,7 +285,7 @@ function MappaPostazioni({ aulaSelezionata, onPostazioneSelezionata, dataFiltro,
           <TextField type="number" label="Durata (Ore)" value={durata} onChange={e => setDurata(e.target.value)} slotProps={{ htmlInput: { min: 1, max: 12 } }} fullWidth />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenPopup(false)}>Annulla</Button>
+          <Button onClick={chiudiPopup}>Annulla</Button>
           <Button onClick={confermaPrenotazione} variant="contained">Conferma</Button>
         </DialogActions>
       </Dialog>
