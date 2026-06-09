@@ -31,12 +31,12 @@ const app = express(); //inizializzazione app
 app.use(express.json()); //ricezione di json da parte del server
 app.use(cookieParser());
 
-// PER VERCEL
+// PER VERCEL e Swagger UI
 const swaggerPath = path.join(process.cwd(), 'swagger.yaml');
 const swaggerFile = fs.readFileSync(swaggerPath, 'utf8');
 
-// Swagger UI
-const swaggerDocument = parse(readFileSync("./swagger.yaml", "utf8"));
+// Usa direttamente la variabile swaggerFile
+const swaggerDocument = parse(swaggerFile);
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(cors({ //premette comunicazione
@@ -98,7 +98,13 @@ io.on("connection", (socket) => {
 });
 
 // avvio server
-const PORT = process.env.PORT || 3000;
-httpServer.listen(PORT, () => {
-    console.log(`Server in esecuzione sulla porta http://localhost:${PORT}`);
-});
+// Avvio server SOLO in locale
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 3000;
+    httpServer.listen(PORT, () => {
+        console.log(`Server in esecuzione sulla porta http://localhost:${PORT}`);
+    });
+}
+
+// ESPORTAZIONE FONDAMENTALE PER VERCEL
+export default httpServer;
